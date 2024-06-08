@@ -9,6 +9,9 @@ public class Draggable : MonoBehaviour
     private GameManager GM;
     private bool placed = false;
 
+    private Dictionary<Block, Vector3> allBlockCoordsDict = new Dictionary<Block, Vector3>();
+    public List<Vector2> allXY = new List<Vector2>();
+
     void Start()
     {
         mainCamera = Camera.main; // »ñÈ¡Ö÷Ïà»ú
@@ -17,6 +20,7 @@ public class Draggable : MonoBehaviour
 
     void OnMouseDown()
     {
+        InitializeBlockDict();
         if (placed)
         {
             return;
@@ -40,6 +44,9 @@ public class Draggable : MonoBehaviour
         }
         // ¸üÐÂÎïÌåµÄÎ»ÖÃµ½ÐÂµÄÊó±êÎ»ÖÃ¼ÓÉÏÆ«ÒÆÁ¿
         transform.position = GetMouseWorldPos() + offset;
+
+        ReserializeBlockDict();
+
         foreach (Transform child in transform)
         {
             Block block = child.GetComponent<Block>();
@@ -56,6 +63,33 @@ public class Draggable : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void InitializeBlockDict()
+    {
+        foreach(Transform child in transform)
+        {
+            Block block = child.GetComponent<Block>();
+            Vector3 blockCoord = GM.gridSystem.GetBlockCoord(block);
+            allBlockCoordsDict.Add(block, blockCoord);
+        }
+    }
+
+    private void ReserializeBlockDict()
+    {
+        foreach (Transform child in transform)
+        {
+            Block block = child.GetComponent<Block>();
+            allBlockCoordsDict[block] = GM.gridSystem.GetBlockCoord(block);            
+        }
+        allXY.Clear();
+        foreach (KeyValuePair<Block, Vector3> entry in allBlockCoordsDict)
+        {
+            allXY.Add(entry.Value);
+        }
+        Vector3 adjustedPosition = new Vector3(transform.position.x, transform.position.y,
+            GM.gridSystem.GetHightestZCoord(allXY));
+        transform.position = adjustedPosition;
     }
 
     void OnMouseUp()

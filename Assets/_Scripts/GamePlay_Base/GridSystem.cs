@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GridSystem : MonoBehaviour
 {
@@ -118,6 +121,65 @@ public class GridSystem : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public Vector3 GetBlockCoord(Block block)
+    {
+        Vector3 pos = block.transform.position;
+        int pX = Mathf.RoundToInt(pos.x);
+        int pY = Mathf.RoundToInt(pos.y);
+        int pZ = Mathf.RoundToInt(pos.z);
+        return new Vector3(pX, pY, pZ);
+    }
+
+    public int GetHightestZCoord(List<Vector2> xy)
+    {
+        List<int> allZ = new List<int>();
+
+        for (int i = 0; i < xy.Count; i++)
+        {
+            int px = Mathf.RoundToInt(xy[i].x);
+            int py = Mathf.RoundToInt(xy[i].y);
+            if (px >= 0 && px < width && py >= 0 && py < height)
+            {
+                for (int j = 0; j < depth; j++)
+                {
+                    if (grid[px, py, j] != null)
+                    {
+                        int tempz = grid[px, py, j].z;
+                        allZ.Add(tempz);
+                    }
+                }
+            }
+        }
+        if (allZ.Count > 0)
+        {
+            Debug.Log("highest z is " + allZ.Min());
+            return allZ.Min() - 1;
+        }
+        else
+        {
+            return 9;
+        }
+    }
+
+    public int GetHighestZCoord(Vector2 xy)
+    {
+        int z = 9;
+        int px = Mathf.RoundToInt(xy.x);
+        int py = Mathf.RoundToInt(xy.y);
+        if (px > 0 && px < width && py > 0 && py < height)
+        {
+            for (int j = 0; j < depth; j++)
+            {
+                if (grid[px, py, j] != null)
+                {
+                    z = grid[px, py, j].z; break;
+                }
+            }
+        }
+        Debug.Log("lowest point is " + z);
+        return z;
     }
 
     public bool SnapToGrid(Block block)
