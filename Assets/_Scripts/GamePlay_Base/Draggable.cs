@@ -12,6 +12,8 @@ public class Draggable : MonoBehaviour
     private Dictionary<Block, Vector3> allBlockCoordsDict = new Dictionary<Block, Vector3>();
     public List<Vector2> allXY = new List<Vector2>();
 
+    public List<int> tempZs = new List<int>();
+
     void Start()
     {
         mainCamera = Camera.main; // »ñÈ¡Ö÷Ïà»ú
@@ -89,6 +91,10 @@ public class Draggable : MonoBehaviour
         }
         Vector3 adjustedPosition = new Vector3(transform.position.x, transform.position.y,
             GM.gridSystem.GetHightestZCoord(allXY));
+
+        tempZs.Clear();
+
+        tempZs = GM.gridSystem.GetHightestZCoordList(allXY);
         transform.position = adjustedPosition;
     }
 
@@ -131,6 +137,7 @@ public class Draggable : MonoBehaviour
             //TODO: spawn in new shape
             GM.ShapeGenerator.GenerateShape();
             //TODO: check each placed block to see if it is removeable
+            int newZCounter = 0;
             foreach (Transform child in transform)
             {
                 if (!validPlacement)
@@ -141,7 +148,8 @@ public class Draggable : MonoBehaviour
                 //TODO: check if blocks are valid, if one is not, then destroy all, else place all and spawn a new object
                 if (block != null)
                 {
-                    validPlacement = GM.gridSystem.SnapToGrid(block); // ¶ÔÆëÃ¿¸ö·½¿éµ½Grid
+                    validPlacement = GM.gridSystem.SnapToGrid(block, tempZs[newZCounter]); // ¶ÔÆëÃ¿¸ö·½¿éµ½Grid
+                    newZCounter++;
                 }
             }
             // ¿ÉÑ¡£ºÔÚÕâÀïµ÷ÓÃ¼ì²éºÍÏû³ýÏàÍ¬ÑÕÉ«Á¬Ðø·½¿éµÄÂß¼­

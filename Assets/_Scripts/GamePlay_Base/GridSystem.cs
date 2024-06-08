@@ -154,7 +154,7 @@ public class GridSystem : MonoBehaviour
         }
         if (allZ.Count > 0)
         {
-            Debug.Log("highest z is " + allZ.Min());
+            //Debug.Log("highest z is " + allZ.Min());
             return allZ.Min() - 1;
         }
         else
@@ -163,26 +163,44 @@ public class GridSystem : MonoBehaviour
         }
     }
 
-    public int GetHighestZCoord(Vector2 xy)
+    private int GetHighestZ(int x, int y)
     {
-        int z = 9;
-        int px = Mathf.RoundToInt(xy.x);
-        int py = Mathf.RoundToInt(xy.y);
-        if (px > 0 && px < width && py > 0 && py < height)
+        List<int> allZ = new List<int>();
+        for (int i = 0; i < depth; i++)
         {
-            for (int j = 0; j < depth; j++)
+            if (grid[x,y,i] != null)
             {
-                if (grid[px, py, j] != null)
-                {
-                    z = grid[px, py, j].z; break;
-                }
+                allZ.Add(grid[x,y,i].z);
             }
         }
-        Debug.Log("lowest point is " + z);
-        return z;
+
+        if (allZ.Count > 0)
+        {
+            return allZ.Min()-1;
+        }
+        else
+        {
+            return 9;
+        }
+
     }
 
-    public bool SnapToGrid(Block block)
+    public List<int> GetHightestZCoordList(List<Vector2> xy)
+    {
+        List<int> allZ = new List<int>();
+        for (int i = 0; i < xy.Count; i++)
+        {
+            int px = Mathf.RoundToInt(xy[i].x);
+            int py = Mathf.RoundToInt(xy[i].y);
+            if (px >= 0 && px < width && py >= 0 && py < height)
+            {
+                allZ.Add(GetHighestZ(px,py));
+            }
+        }
+        return allZ;
+    }
+
+    public bool SnapToGrid(Block block, int newZ)
     {
         // Calculate and snap the block to the nearest grid cell
         Vector3 position = block.transform.position;
@@ -190,7 +208,7 @@ public class GridSystem : MonoBehaviour
         int closestY = Mathf.RoundToInt(position.y);
         int closestZ = Mathf.RoundToInt(position.z);
 
-        block.transform.position = new Vector3(closestX, closestY, closestZ);
-        return AddBlock(closestX, closestY, closestZ, block); // Add to the grid system
+        block.transform.position = new Vector3(closestX, closestY, newZ);
+        return AddBlock(closestX, closestY, newZ, block); // Add to the grid system
     }
 }
