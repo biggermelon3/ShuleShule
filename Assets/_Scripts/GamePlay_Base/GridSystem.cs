@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class GridSystem : MonoBehaviour
 {
@@ -56,6 +53,27 @@ public class GridSystem : MonoBehaviour
         }
         return false;
     }
+    
+    //Clear all block infos
+    public void ClearGrid()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                for (int z = 0; z < depth; z++)
+                {
+                    if (grid[x, y, z] != null)
+                    {
+                        Object.Destroy(grid[x, y, z].gameObject);
+                        grid[x, y, z] = null;
+                    }
+                }
+            }
+        }
+    }
+    
+    
     
     public int CheckAndRemoveBlocks()
     {

@@ -248,6 +248,7 @@ MonoBehaviour:
   width: 0
   height: 0
   depth: 0
+  goalCoords: {x: 0, y: 0, z: 0}
 --- !u!114 &143385486
 MonoBehaviour:
   m_ObjectHideFlags: 0

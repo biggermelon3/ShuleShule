@@ -1,10 +1,9 @@
-
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
     public GridSystem gridSystem;
-
+    public GameObject blockPrefab;
     public LevelData GenerateLevelData()
     {
         int width = gridSystem.width;

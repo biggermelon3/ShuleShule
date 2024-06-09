@@ -88,21 +88,17 @@ public class ShapeGenerator : MonoBehaviour
         int i = 0;
         foreach (Vector2Int blockPosition in selectedShape.blocksPositions)
         {
-            // ÎªÃ¿¸ö·½¿éÎ»ÖÃÉú³ÉÒ»¸ö·½¿é
-            GameObject block = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            GameObject block = Instantiate(blockPrefab);
+            
             block.transform.position = new Vector3(blockPosition.x, blockPosition.y, 0);
-            Color selectedShapeColor = prevColors[i];
-            i++;
+            Color selectedShapeColor = GM.PickRandomColor();
+            prevColors.Add(selectedShapeColor);
             block.GetComponent<Renderer>().material.color = selectedShapeColor; // Ó¦ÓÃÑÕÉ«
             block.transform.parent = _Shape.transform; // ÉèÖÃ¸¸¶ÔÏóÒÔ±£³Ö²ã¼¶ÇåÎú
 
-            Block blockComponent = block.AddComponent<Block>(); // Ìí¼ÓBlock×é¼þ
+            Block blockComponent = block.GetComponent<Block>(); // Ìí¼ÓBlock×é¼þ
             blockComponent.Initialize(selectedShapeColor);
-
-            //jelly feel
-            block.AddComponent<JellyFeel>();
-
-
+            
             // ¼ÆËã±ß½ç
             minBounds = Vector3.Min(minBounds, block.transform.position);
             maxBounds = Vector3.Max(maxBounds, block.transform.position);
