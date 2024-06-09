@@ -13,6 +13,8 @@ public class GridSystem : MonoBehaviour
     public int depth;
     private GameObject wireCubePrefab;
     private GameObject[,,] emptyGrid;
+    [SerializeField]
+    private Vector3 goalCoords;
 
     public GridSystem(int width, int height,  int depth)
     {
@@ -20,6 +22,7 @@ public class GridSystem : MonoBehaviour
         this.height = height;
         this.depth = depth;
         grid = new Block[width, height, depth];
+
 
         // Load the wireframe cube prefab
         wireCubePrefab = Resources.Load<GameObject>("Prefabs/WireframeCube");
@@ -182,7 +185,6 @@ public class GridSystem : MonoBehaviour
         {
             return 9;
         }
-
     }
 
     public List<int> GetHightestZCoordList(List<Vector2> xy)

@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
         int gridHeight = height; // ¸ù¾ÝÐèÒªÉèÖÃ
         int gridDepth = depth;
         gridSystem = new GridSystem(gridWidth, gridHeight,gridDepth);
-
     }
 
     private void Update()
