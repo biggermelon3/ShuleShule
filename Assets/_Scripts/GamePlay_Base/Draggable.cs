@@ -44,6 +44,11 @@ public class Draggable : MonoBehaviour
             // 旋转物体90度
             transform.Rotate(0, 0, 90, Space.World);
         }
+
+        if (Input.touches.Length == 2)
+        {
+            transform.Rotate(0,0,90, Space.World);
+        }
         // ¸üÐÂÎïÌåµÄÎ»ÖÃµ½ÐÂµÄÊó±êÎ»ÖÃ¼ÓÉÏÆ«ÒÆÁ¿
         transform.position = GetMouseWorldPos() + offset;
 
