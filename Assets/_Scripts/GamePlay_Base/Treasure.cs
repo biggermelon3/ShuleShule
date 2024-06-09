@@ -24,7 +24,7 @@ public class Treasure : MonoBehaviour
         if (Physics.Raycast(origin, direction, out hit))
         {
             // Check the tag of the first object hit by the raycast
-            if (hit.collider.GetComponent<Block>())
+            if (hit.collider.tag == "block")
             {
                 isNotBlocked = false;
             }
