@@ -38,7 +38,11 @@ public class GridSystem : MonoBehaviour
     //Loaddata from LevelData
     public void LoadLevelData(LevelData levelData)
     {
-        ClearGrid();
+        if (grid != null)
+        {
+            ClearGrid();
+        }
+        
         InitializeGrid(levelData.width, levelData.height, levelData.depth);
         GameObject blockPrefab = Resources.Load<GameObject>("Prefabs/Block");
         foreach (var blockData in levelData.blocks)

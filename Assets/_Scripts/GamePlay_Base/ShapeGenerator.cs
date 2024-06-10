@@ -84,8 +84,7 @@ public class ShapeGenerator : MonoBehaviour
         Vector3 minBounds = Vector3.positiveInfinity;
         Vector3 maxBounds = Vector3.negativeInfinity;
 
-        // Ê¹ÓÃÐÎ×´Êý¾ÝÉú³ÉÐÎ×´
-        int i = 0;
+
         foreach (Vector2Int blockPosition in selectedShape.blocksPositions)
         {
             GameObject block = Instantiate(blockPrefab);

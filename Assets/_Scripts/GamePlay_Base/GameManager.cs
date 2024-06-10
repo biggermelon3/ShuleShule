@@ -13,12 +13,22 @@ public class GameManager : MonoBehaviour
     public int width;
     public int height;
     public int depth;
+    public string lvlJsonName;
     void Start()
     {
-        int gridWidth = width; // ¸ù¾ÝÐèÒªÉèÖÃ
-        int gridHeight = height; // ¸ù¾ÝÐèÒªÉèÖÃ
-        int gridDepth = depth;
-        currentGrid = gridSystem.InitializeGrid(gridWidth, gridHeight,gridDepth);
+        if (lvlJsonName != "")
+        {
+            LoadLevel();
+        }
+        else
+        {
+            int gridWidth = width; // ¸ù¾ÝÐèÒªÉèÖÃ
+            int gridHeight = height; // ¸ù¾ÝÐèÒªÉèÖÃ
+            int gridDepth = depth;
+            currentGrid = gridSystem.InitializeGrid(gridWidth, gridHeight,gridDepth);
+        }
+        
+        
     }
 
     private void Update()
@@ -120,5 +130,28 @@ public class GameManager : MonoBehaviour
 
         return pickedShape;
     }
+    
+    /// ////////////////////////////////////////////////////////Load Levels////////////////////
+    public void LoadLevel()
+    {
+        string fileName = lvlJsonName;
+        if (string.IsNullOrEmpty(fileName))
+        {
+            Debug.LogError("File name cannot be empty.");
+            return;
+        }
 
+        TextAsset jsonFile = Resources.Load<TextAsset>("lvlFiles/" + fileName);
+        if (jsonFile != null)
+        {
+            string json = jsonFile.text;
+            LevelData levelData = JsonUtility.FromJson<LevelData>(json);
+            gridSystem.LoadLevelData(levelData);
+            Debug.Log("Level loaded from Resources/lvlFiles/" + fileName);
+        }
+        else
+        {
+            Debug.LogError("Saved level file not found in Resources/lvlFiles/" + fileName);
+        }
+    }
 }

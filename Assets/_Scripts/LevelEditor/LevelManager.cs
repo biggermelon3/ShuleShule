@@ -1,19 +1,23 @@
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 public class LevelManager : MonoBehaviour
 {
     public GridSystem gridSystem;
     public GameObject blockPrefab;
     public ColorSetting colorPalette;
-    public InputField fileNameInput;
+    public TMP_InputField fileNameInput;
     public Button saveButton;
     public Button loadButton;
     public Button startPlacingButton;
     public Button stopPlacingButton;
+    public GameObject colorButtonPrefab;
+    
     private Color selectedColor = Color.white;
     private bool isPlacingBlocks = false;
+
+    private GameObject colorButtonContainer;
 
     private void Start()
     {
@@ -22,6 +26,17 @@ public class LevelManager : MonoBehaviour
             selectedColor = colorPalette.colors[0];
         }
 
+        //search for private references
+        colorButtonContainer = FindObjectOfType<HorizontalLayoutGroup>().gameObject;
+        Debug.Log(colorButtonContainer +"1");
+        
+        InitializeColorButtons();
+        
+        //loadResources
+        blockPrefab = Resources.Load<GameObject>("Prefabs/Block");
+        gridSystem.InitializeGrid(5,5,10);
+        
+        //UI Events
         saveButton.onClick.AddListener(SaveLevel);
         loadButton.onClick.AddListener(LoadLevel);
         startPlacingButton.onClick.AddListener(StartPlacingBlocks);
@@ -36,6 +51,32 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    private void InitializeColorButtons()
+    {
+        foreach (Transform child in colorButtonContainer.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        if (colorPalette != null)
+        {
+            foreach (Color color in colorPalette.colors)
+            {
+                GameObject colorButton = Instantiate(colorButtonPrefab, colorButtonContainer.transform);
+                colorButton.GetComponent<Image>().color = color;
+                Button button = colorButton.GetComponent<Button>();
+                button.onClick.AddListener(() => SelectColor(color));
+            }
+        }
+    }
+
+    private void SelectColor(Color color)
+    {
+        selectedColor = color;
+        Debug.Log("Selected Color: " + color);
+    }
+    
+    //Placing block function
     private void HandleBlockPlacement()
     {
         if (Input.GetMouseButtonDown(0))
