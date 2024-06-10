@@ -12,25 +12,58 @@ public class GridSystem : MonoBehaviour
     private GameObject[,,] emptyGrid;
     [SerializeField]
     private Vector3 goalCoords;
-
-    public GridSystem(int width, int height,  int depth)
+    
+    
+    public Block[,,] InitializeGrid(int width, int height, int depth)
     {
         this.width = width;
         this.height = height;
         this.depth = depth;
         grid = new Block[width, height, depth];
 
-
+        // 初始化空网格
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                for (int z = 0; z < depth; z++)
+                {
+                    grid[x, y, z] = null;
+                }
+            }
+        }
+        WireFrameTheGrid(grid);
+        return grid;
+    }
+    //Loaddata from LevelData
+    public void LoadLevelData(LevelData levelData)
+    {
+        ClearGrid();
+        InitializeGrid(levelData.width, levelData.height, levelData.depth);
+        GameObject blockPrefab = Resources.Load<GameObject>("Prefabs/Block");
+        foreach (var blockData in levelData.blocks)
+        {
+            Vector3 position = new Vector3(blockData.x, blockData.y, blockData.z);
+            GameObject blockObject = Instantiate(blockPrefab, position, Quaternion.identity);
+            Block blockComponent = blockObject.GetComponent<Block>();
+            blockComponent.Initialize(blockData.color);
+            AddBlock(blockData.x, blockData.y, blockData.z, blockComponent);
+        }
+    }
+    
+    public void WireFrameTheGrid(Block[,,] grid)
+    {
         // Load the wireframe cube prefab
         wireCubePrefab = Resources.Load<GameObject>("Prefabs/WireframeCube");
-        emptyGrid = new GameObject[this.width, this.height, this.depth];
+        emptyGrid = new GameObject[grid.GetLength(0), grid.GetLength(1), grid.GetLength(2)];
 
-        for (int i = 0; i < this.width; i++)
+        for (int i = 0; i < grid.GetLength(0); i++)
         {
-            for (int j = 0; j < this.height; j++)
+            for (int j = 0; j < grid.GetLength(1); j++)
             {
                 // Only create wireframe cubes in the top layer (highest z value)
-                emptyGrid[i, j, this.depth - 1] = Instantiate(wireCubePrefab, new Vector3(i, j, this.depth - 1), Quaternion.identity);
+                int highestZ = GetHighestZ(i, j);
+                emptyGrid[i, j, highestZ] = Instantiate(wireCubePrefab, new Vector3(i, j, highestZ), Quaternion.identity);
             }
         }
     }
@@ -184,7 +217,7 @@ public class GridSystem : MonoBehaviour
         }
     }
 
-    private int GetHighestZ(int x, int y)
+    public int GetHighestZ(int x, int y)
     {
         List<int> allZ = new List<int>();
         for (int i = 0; i < depth; i++)

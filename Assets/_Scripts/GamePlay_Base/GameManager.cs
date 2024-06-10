@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 {
 
     public GridSystem gridSystem;
+    public Block[,,] currentGrid;
     public int width;
     public int height;
     public int depth;
@@ -17,7 +18,7 @@ public class GameManager : MonoBehaviour
         int gridWidth = width; // ¸ù¾ÝÐèÒªÉèÖÃ
         int gridHeight = height; // ¸ù¾ÝÐèÒªÉèÖÃ
         int gridDepth = depth;
-        gridSystem = new GridSystem(gridWidth, gridHeight,gridDepth);
+        currentGrid = gridSystem.InitializeGrid(gridWidth, gridHeight,gridDepth);
     }
 
     private void Update()
