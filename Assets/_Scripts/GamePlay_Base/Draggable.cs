@@ -141,7 +141,8 @@ public class Draggable : MonoBehaviour
         }
         else
         {
-            GM.gridSystem.WireFrameTheGrid(GM.currentGrid);
+            //TODO: make a beter wireFrame FUncion FK
+            //GM.gridSystem.WireFrameTheGrid(GM.currentGrid);
             //TODO: spawn in new shape
             GM.ShapeGenerator.GenerateShape();
             //TODO: check each placed block to see if it is removeable

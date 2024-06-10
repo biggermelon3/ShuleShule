@@ -146,6 +146,7 @@ public class GameManager : MonoBehaviour
         {
             string json = jsonFile.text;
             LevelData levelData = JsonUtility.FromJson<LevelData>(json);
+            currentGrid = gridSystem.InitializeGrid(levelData.width, levelData.height, levelData.depth);
             gridSystem.LoadLevelData(levelData);
             Debug.Log("Level loaded from Resources/lvlFiles/" + fileName);
         }

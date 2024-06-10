@@ -43,7 +43,7 @@ public class GridSystem : MonoBehaviour
             ClearGrid();
         }
         
-        InitializeGrid(levelData.width, levelData.height, levelData.depth);
+
         GameObject blockPrefab = Resources.Load<GameObject>("Prefabs/Block");
         foreach (var blockData in levelData.blocks)
         {
@@ -217,7 +217,7 @@ public class GridSystem : MonoBehaviour
         }
         else
         {
-            return 9;
+            return depth-1;
         }
     }
 
@@ -238,7 +238,7 @@ public class GridSystem : MonoBehaviour
         }
         else
         {
-            return 9;
+            return depth-1;
         }
     }
 
