@@ -124,6 +124,7 @@ public class Draggable : MonoBehaviour
             //TODO: check if blocks are valid, if one is not, then destroy all, else place all and spawn a new object
             if (block != null)
             {
+                Debug.Log(GM.gridSystem.ValidSnap(block));
                 validPlacement = GM.gridSystem.ValidSnap(block); // ¶ÔÆëÃ¿¸ö·½¿éµ½Grid
             }
         }

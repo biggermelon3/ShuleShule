@@ -5,12 +5,13 @@ using UnityEngine;
 public class TreasureChest : MonoBehaviour
 {
     public List<Treasure> treasures = new List<Treasure>();
-
+    bool success;
     private void Update()
     {
-        if (CheckForTreasures())
+        if (CheckForTreasures() && !success)
         {
             Debug.Log("Success!");
+            success = true;
         }
     }
 
