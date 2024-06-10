@@ -267,10 +267,10 @@ MonoBehaviour:
   depth: 10
   lvlJsonName: lvl1
   initialColors:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 1, g: 0, b: 0, a: 0}
-  - {r: 0, g: 1, b: 0.052682877, a: 0}
-  - {r: 0, g: 0.15447187, b: 1, a: 0}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 1, b: 0.052682877, a: 1}
+  - {r: 0, g: 0.15447187, b: 1, a: 1}
   allShapes:
   - {fileID: 11400000, guid: 706743b85653596478170d3f0a1d4600, type: 2}
   - {fileID: 11400000, guid: 320b38cd14f3d2849836c31b576671da, type: 2}

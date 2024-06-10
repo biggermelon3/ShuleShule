@@ -52,6 +52,7 @@ public class GridSystem : MonoBehaviour
             Block blockComponent = blockObject.GetComponent<Block>();
             blockComponent.Initialize(blockData.color);
             AddBlock(blockData.x, blockData.y, blockData.z, blockComponent);
+            Debug.Log(AddBlock(blockData.x, blockData.y, blockData.z, blockComponent));
         }
     }
     
