@@ -238,6 +238,26 @@ public class GridSystem : MonoBehaviour
         }
     }
 
+    public int CheckEntireGridForHighestZ()
+    {
+        List<int> allZ = new List<int>();
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                for (int z = 0; z < depth; z++)
+                {
+                    if (grid[x,y,z] != null)
+                    {
+                        allZ.Add(grid[x, y, z].z);
+                    }
+                }
+            }
+        }
+
+        return allZ.Min();
+    }
+
     public List<int> GetHightestZCoordList(List<Vector2> xy)
     {
         List<int> allZ = new List<int>();
