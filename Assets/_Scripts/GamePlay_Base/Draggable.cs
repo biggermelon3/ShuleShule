@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Draggable : MonoBehaviour
@@ -13,6 +14,7 @@ public class Draggable : MonoBehaviour
     public List<Vector2> allXY = new List<Vector2>();
 
     public List<int> tempZs = new List<int>();
+
 
     void Start()
     {
@@ -139,6 +141,7 @@ public class Draggable : MonoBehaviour
         }
         else
         {
+            GM.gridSystem.WireFrameTheGrid(GM.currentGrid);
             //TODO: spawn in new shape
             GM.ShapeGenerator.GenerateShape();
             //TODO: check each placed block to see if it is removeable
@@ -164,6 +167,7 @@ public class Draggable : MonoBehaviour
                 // ¸ù¾ÝÒÆ³ýµÄ·½¿éÊýÁ¿¸üÐÂÓÎÏ·Âß¼­£¬ÀýÈç¸üÐÂ·ÖÊý
                 GM.AddScore(removedBlocksCount);
             }
+            EventManager.OnDraggablePlaced.Invoke(GM.gridSystem.CheckEntireGridForHighestZ());
         }
     }
 
