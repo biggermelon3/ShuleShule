@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public int height;
     public int depth;
     public string lvlJsonName;
-    void Start()
+    void Awake()
     {
         if (lvlJsonName != "")
         {
@@ -147,6 +147,9 @@ public class GameManager : MonoBehaviour
             string json = jsonFile.text;
             LevelData levelData = JsonUtility.FromJson<LevelData>(json);
             currentGrid = gridSystem.InitializeGrid(levelData.width, levelData.height, levelData.depth);
+            height = levelData.height;
+            width = levelData.width;
+            depth = levelData.depth;
             gridSystem.LoadLevelData(levelData);
             Debug.Log("Level loaded from Resources/lvlFiles/" + fileName);
         }

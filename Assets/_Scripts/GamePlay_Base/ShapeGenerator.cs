@@ -10,6 +10,8 @@ public class ShapeGenerator : MonoBehaviour
     private List<Color> prevColors;
     private GameObject blockPrefab;
 
+    private GameObject currentBlock;//stores the generated shape into this, for shuffling color
+
     private void Awake()
     {
         prevColors = new List<Color>();
@@ -19,11 +21,11 @@ public class ShapeGenerator : MonoBehaviour
     {
         GM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         blockPrefab = Resources.Load<GameObject>("Prefabs/Block");
+        EventManager.ShuffleColor.AddListener(ShuffleColor);
         GenerateShape();
     }
     public void GenerateShape()
     {
-        
         // Ëæ»úÑ¡ÔñÒ»¸öÐÎ×´Êý¾Ý
         ShapeData selectedShape = GM.PickRandomShape();
         prevShape = selectedShape;
@@ -68,6 +70,7 @@ public class ShapeGenerator : MonoBehaviour
         float padding = 0.1f; // ±ß¾à´óÐ¡£¬¿ÉÒÔ¸ù¾ÝÐèÒªµ÷Õû
         collider.size += new Vector3(1 + padding, 1 + padding, 1 + padding);
         _Shape.transform.position = transform.position;
+        currentBlock = _Shape;
     }
     
     public void GeneratePrevShape()
@@ -84,14 +87,14 @@ public class ShapeGenerator : MonoBehaviour
         Vector3 minBounds = Vector3.positiveInfinity;
         Vector3 maxBounds = Vector3.negativeInfinity;
 
-
+        int i = 0;
         foreach (Vector2Int blockPosition in selectedShape.blocksPositions)
         {
             GameObject block = Instantiate(blockPrefab);
-            
+            Color selectedShapeColor = prevColors[i];
             block.transform.position = new Vector3(blockPosition.x, blockPosition.y, 0);
-            Color selectedShapeColor = GM.PickRandomColor();
-            prevColors.Add(selectedShapeColor);
+            //Color selectedShapeColor = GM.PickRandomColor();
+            //prevColors.Add(selectedShapeColor);
             block.GetComponent<Renderer>().material.color = selectedShapeColor; // Ó¦ÓÃÑÕÉ«
             block.transform.parent = _Shape.transform; // ÉèÖÃ¸¸¶ÔÏóÒÔ±£³Ö²ã¼¶ÇåÎú
 
@@ -101,6 +104,7 @@ public class ShapeGenerator : MonoBehaviour
             // ¼ÆËã±ß½ç
             minBounds = Vector3.Min(minBounds, block.transform.position);
             maxBounds = Vector3.Max(maxBounds, block.transform.position);
+            i++;
         }
 
         // ´´½¨²¢µ÷ÕûBoxCollider
@@ -111,5 +115,20 @@ public class ShapeGenerator : MonoBehaviour
         float padding = 0.1f; // ±ß¾à´óÐ¡£¬¿ÉÒÔ¸ù¾ÝÐèÒªµ÷Õû
         collider.size += new Vector3(1 + padding, 1 + padding, 1 + padding);
         _Shape.transform.position = transform.position;
+    }
+
+    public void ShuffleColor()
+    {
+        List<GameObject> blocksInShape = new List<GameObject>();
+        foreach (Transform child in currentBlock.transform)
+        {
+            blocksInShape.Add(child.gameObject);
+        }
+
+        for (int x = 0; x < blocksInShape.Count; x++)
+        {
+            Color selectedShapeColor = GM.PickRandomColor();
+            blocksInShape[x].GetComponent<Renderer>().material.color = selectedShapeColor;
+        }
     }
 }

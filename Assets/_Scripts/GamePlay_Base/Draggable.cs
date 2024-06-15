@@ -15,11 +15,19 @@ public class Draggable : MonoBehaviour
 
     public List<int> tempZs = new List<int>();
 
-
     void Start()
     {
         mainCamera = Camera.main; // »ñÈ¡Ö÷Ïà»ú
         GM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        EventManager.OnRotateDraggable.AddListener(RotateThis);
+    }
+
+    private void RotateThis()
+    {
+        if (!placed)
+        {
+            transform.Rotate(0, 0, 90, Space.World);
+        }
     }
 
     void OnMouseDown()
@@ -41,16 +49,11 @@ public class Draggable : MonoBehaviour
         {
             return;
         }
-        if (Input.GetMouseButtonDown(1) && !placed)
-        {
-            // 旋转物体90度
-            transform.Rotate(0, 0, 90, Space.World);
-        }
-
-        if (Input.touches.Length == 2)
-        {
-            transform.Rotate(0,0,90, Space.World);
-        }
+        //if (Input.GetMouseButtonDown(1) && !placed)
+        //{
+        //    // 旋转物体90度
+        //    transform.Rotate(0, 0, 90, Space.World);
+        //}
         // ¸üÐÂÎïÌåµÄÎ»ÖÃµ½ÐÂµÄÊó±êÎ»ÖÃ¼ÓÉÏÆ«ÒÆÁ¿
         transform.position = GetMouseWorldPos() + offset;
 
@@ -137,6 +140,7 @@ public class Draggable : MonoBehaviour
             }
             //respawn old shape
             GM.ShapeGenerator.GeneratePrevShape();
+            Debug.Log("regen shape");
             Destroy(gameObject);
             return;
         }

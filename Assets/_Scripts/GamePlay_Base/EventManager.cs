@@ -5,4 +5,6 @@ using UnityEngine.Events;
 public static class EventManager
 {
     public static UnityEvent<int> OnDraggablePlaced = new UnityEvent<int>();
+    public static UnityEvent OnRotateDraggable = new UnityEvent();
+    public static UnityEvent ShuffleColor = new UnityEvent();
 }
