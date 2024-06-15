@@ -348,6 +348,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSystem: {fileID: 143385485}
+  startingZOffset: 0
   baseBlock: {fileID: 3846878600451461261, guid: 50c35893665e43f409638695783366c2, type: 3}
 --- !u!1 &65313179
 GameObject:
@@ -468,11 +469,7 @@ MonoBehaviour:
   height: 0
   depth: 0
   lvlJsonName: lvl1
-  initialColors:
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 1, b: 0.052682877, a: 1}
-  - {r: 0, g: 0.15447187, b: 1, a: 1}
+  colorPalette: {fileID: 11400000, guid: 9a2e7a74442a2bb48a7b165239ff7b90, type: 2}
   allShapes:
   - {fileID: 11400000, guid: 706743b85653596478170d3f0a1d4600, type: 2}
   - {fileID: 11400000, guid: 320b38cd14f3d2849836c31b576671da, type: 2}

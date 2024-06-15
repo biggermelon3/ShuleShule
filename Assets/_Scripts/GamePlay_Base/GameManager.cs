@@ -45,8 +45,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ¶¨Òå³õÊ¼ÑÕÉ«Êý×é
-    public Color[] initialColors;
+    // ColorSetting 
+    public ColorSetting colorPalette;
     public ShapeData[] allShapes;
 
     // ÑÕÉ«"±³°ü"ÁÐ±í
@@ -74,8 +74,12 @@ public class GameManager : MonoBehaviour
     public void InitializeColorBag()
     {
         colorBag.Clear(); // È·±£"±³°ü"ÊÇ¿ÕµÄ
-
-        foreach (Color color in initialColors)
+        if (colorPalette == null)
+        {
+            Debug.LogError("no colorPalette Settings");
+            return;
+        }
+        foreach (Color color in colorPalette.colors)
         {
             colorBag.Add(color);
             colorBag.Add(color);
