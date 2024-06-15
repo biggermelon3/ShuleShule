@@ -191,8 +191,16 @@ public class GameManager : MonoBehaviour
             depth = levelData.depth;
             
             // Initialize colorPalette and allShapes from levelData
-            colorPalette = levelData.colors.ToArray()[0];
-            allShapes = levelData.shapes.ToArray();
+            colorPalette = ScriptableObject.CreateInstance<ColorSetting>();
+            colorPalette.colors = levelData.colors.ToArray();
+            //shapes
+            allShapes = new ShapeData[levelData.shapes.Count];
+            for (int i = 0; i < levelData.shapes.Count; i++)
+            {
+                ShapeData shape = ScriptableObject.CreateInstance<ShapeData>();
+                shape.blocksPositions = levelData.shapes[i].blocksPositions;
+                allShapes[i] = shape;
+            }
             
             gridSystem.LoadLevelData(levelData);
             Debug.Log("Level loaded from Resources/lvlFiles/" + fileName);

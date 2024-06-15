@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class LevelManager : MonoBehaviour
 {
     public Vector3 _width_height_depth;
-    public ColorSetting[] colorPalette;
+    public ColorSetting colorPalette;
     public ShapeData[] allShapes;
     
     public GridSystem gridSystem;
@@ -29,9 +29,9 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        if (colorPalette != null && colorPalette[0].colors.Length > 0)
+        if (colorPalette != null && colorPalette.colors.Length > 0)
         {
-            selectedColor = colorPalette[0].colors[0];
+            selectedColor = colorPalette.colors[0];
         }
 
         //search for private references
@@ -74,7 +74,7 @@ public class LevelManager : MonoBehaviour
 
         if (colorPalette != null)
         {
-            foreach (Color color in colorPalette[0].colors)
+            foreach (Color color in colorPalette.colors)
             {
                 GameObject colorButton = Instantiate(colorButtonPrefab, colorButtonContainer.transform);
                 colorButton.GetComponent<Image>().color = color;
@@ -166,6 +166,23 @@ public class LevelManager : MonoBehaviour
         {
             string json = File.ReadAllText(path);
             LevelData levelData = JsonUtility.FromJson<LevelData>(json);
+            _width_height_depth.x = levelData.width;
+            _width_height_depth.y = levelData.height;
+            _width_height_depth.z = levelData.depth;
+            // Initialize colorPalette and allShapes from levelData
+            // Initialize colorPalette and allShapes from levelData
+            colorPalette = ScriptableObject.CreateInstance<ColorSetting>();
+            colorPalette.colors = levelData.colors.ToArray();
+            //shapes
+            allShapes = new ShapeData[levelData.shapes.Count];
+            for (int i = 0; i < levelData.shapes.Count; i++)
+            {
+                ShapeData shape = ScriptableObject.CreateInstance<ShapeData>();
+                shape.blocksPositions = levelData.shapes[i].blocksPositions;
+                allShapes[i] = shape;
+            }
+            
+            
             gridSystem.LoadLevelData(levelData);
             Debug.Log("Level loaded from " + path);
         }
@@ -232,16 +249,17 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
-        // 保存颜色数据
-        foreach (ColorSetting color in colorPalette)
+        // save color
+        foreach (Color color in colorPalette.colors)
         {
             levelData.colors.Add(color);
         }
 
-        // 保存形状数据
+        // save shape
         foreach (ShapeData shape in allShapes)
         {
-            levelData.shapes.Add(shape);
+            ShapeDataSerializable shapeData = new ShapeDataSerializable(shape.blocksPositions);
+            levelData.shapes.Add(shapeData);
         }
 
         return levelData;
