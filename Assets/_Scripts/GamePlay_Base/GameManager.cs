@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour
     public int height;
     public int depth;
     public string lvlJsonName;
+
+    [SerializeField]
+    private GameObject roundCompletePrompt;
+
     void Awake()
     {
         if (lvlJsonName != "")
@@ -29,6 +33,17 @@ public class GameManager : MonoBehaviour
         }
         
         
+    }
+
+    private void Start()
+    {
+        EventManager.OnRoundComplete.AddListener(DisplayRoundCompletePrompt);
+        EventManager.ProceedToNextLevel.AddListener(LoadLevel);
+    }
+
+    private void DisplayRoundCompletePrompt()
+    {
+        roundCompletePrompt.SetActive(true);
     }
 
     private void Update()
