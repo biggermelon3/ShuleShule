@@ -99,7 +99,7 @@ public class LevelManager : MonoBehaviour
                 int x = Mathf.RoundToInt(position.x);
                 int y = Mathf.RoundToInt(position.y);
                 int z = gridSystem.GetHighestZ(x, y);
-
+                EventManager.OnDraggablePlaced.Invoke(z);
                 GameObject block = Instantiate(blockPrefab, new Vector3(x, y, z), Quaternion.identity);
                 Block blockComponent = block.GetComponent<Block>();
                 blockComponent.Initialize(selectedColor);
@@ -121,6 +121,7 @@ public class LevelManager : MonoBehaviour
                 int x = Mathf.RoundToInt(position.x);
                 int y = Mathf.RoundToInt(position.y);
                 int z = gridSystem.GetHighestZ(x, y) + 1;
+                EventManager.OnDraggablePlaced.Invoke(z);
                 //TODO:make a for loop tha delete multiple grids one time
                 Block currentBlock = gridSystem.grid[x, y, z];
                 List<Block> blocksToRemove = new List<Block>();

@@ -5,12 +5,10 @@ using UnityEngine;
 public class CameraAdjustment : MonoBehaviour
 {
     private Camera m_Camera;
-    private float positionDifference;
     private int lastHighestZPosition;
-    [SerializeField]
-    private GridSystem gridSystem; //to get the height, width, depth of grid for camera adjustment
 
     private GameManager GM;
+    private LevelManager LM;
 
     [SerializeField]
     private float startingZOffset;
@@ -20,19 +18,38 @@ public class CameraAdjustment : MonoBehaviour
     [SerializeField]
     private GameObject baseBlock;//to measure the dimension of a unit
 
+    [SerializeField]
+    private bool isInLevelEditor;
+
     void Start()
     {
         m_Camera = Camera.main;
         lastHighestZPosition = 9;
         EventManager.OnDraggablePlaced.AddListener(AdjustCameraZPosition);
-        GM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-        GetMiddlePointXY();
-        InitializeCameraPosition();
+        if (!isInLevelEditor)
+        {
+            GM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+            GetMiddlePointXY();
+            InitializeCameraPosition();
+        }
+        else if (isInLevelEditor)
+        {
+            LM = GameObject.Find("LevelEditor").GetComponent<LevelManager>().GetComponent<LevelManager>();
+            GetMiddlePointForLevelEditor();
+            InitializeCameraPosition();
+        }
+
+    }
+
+    private void GetMiddlePointForLevelEditor()
+    {
+        absoluteHeight = baseBlock.GetComponent<MeshFilter>().sharedMesh.bounds.size.y * LM.gridSystem.height;
+        absoluteWidth = baseBlock.GetComponent<MeshFilter>().sharedMesh.bounds.size.x * LM.gridSystem.width;
+        absoluteDepth = LM.gridSystem.depth;
     }
 
     private void GetMiddlePointXY()
     {
-        Debug.Log(GM.gridSystem.height);
         absoluteHeight = baseBlock.GetComponent<MeshFilter>().sharedMesh.bounds.size.y * GM.gridSystem.height;
         absoluteWidth = baseBlock.GetComponent<MeshFilter>().sharedMesh.bounds.size.x * GM.gridSystem.width;
         absoluteDepth = GM.gridSystem.depth;
