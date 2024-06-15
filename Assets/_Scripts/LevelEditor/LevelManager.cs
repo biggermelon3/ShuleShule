@@ -140,13 +140,24 @@ public class LevelManager : MonoBehaviour
     public void StartPlacingBlocks()
     {
         isPlacingBlocks = true;
+        ToggleUIElement(startPlacingButton, false);
+        ToggleUIElement(stopPlacingButton, true);
     }
 
     public void StopPlacingBlocks()
     {
         isPlacingBlocks = false;
+        ToggleUIElement(stopPlacingButton, false);
+        ToggleUIElement(startPlacingButton, true);
     }
-
+    
+    //setUIbutton gameobject active or interactive
+    public void ToggleUIElement(Button UIbutton, bool OnAndOff = true,bool interable = true)
+    {
+        UIbutton.interactable = interable;
+        UIbutton.gameObject.SetActive(OnAndOff);
+    }
+    
     public LevelData GenerateLevelData()
     {
         LevelData levelData = new LevelData(gridSystem.width, gridSystem.height, gridSystem.depth);
