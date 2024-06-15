@@ -2,6 +2,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 public class LevelManager : MonoBehaviour
 {
     public GridSystem gridSystem;
@@ -12,10 +13,13 @@ public class LevelManager : MonoBehaviour
     public Button loadButton;
     public Button startPlacingButton;
     public Button stopPlacingButton;
+    public Button startDeletingButton;
+    public Button stopDeletingButton;
     public GameObject colorButtonPrefab;
     
     private Color selectedColor = Color.white;
     private bool isPlacingBlocks = false;
+    private bool isDeletingBlocks = false;
 
     private GameObject colorButtonContainer;
 
@@ -41,6 +45,8 @@ public class LevelManager : MonoBehaviour
         loadButton.onClick.AddListener(LoadLevel);
         startPlacingButton.onClick.AddListener(StartPlacingBlocks);
         stopPlacingButton.onClick.AddListener(StopPlacingBlocks);
+        startDeletingButton.onClick.AddListener(StartDeletingBlocks);
+        stopDeletingButton.onClick.AddListener(StopDeletingBlocks);  
     }
 
     private void Update()
@@ -48,6 +54,10 @@ public class LevelManager : MonoBehaviour
         if (isPlacingBlocks)
         {
             HandleBlockPlacement();
+        }else if (isDeletingBlocks)
+        {
+
+            HandleBlockDeleting();
         }
     }
 
@@ -98,6 +108,29 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    //Deleting block function
+    private void HandleBlockDeleting()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                Vector3 position = hit.point;
+                int x = Mathf.RoundToInt(position.x);
+                int y = Mathf.RoundToInt(position.y);
+                int z = gridSystem.GetHighestZ(x, y) + 1;
+                //TODO:make a for loop tha delete multiple grids one time
+                Block currentBlock = gridSystem.grid[x, y, z];
+                List<Block> blocksToRemove = new List<Block>();
+                blocksToRemove.Add(currentBlock);
+                Debug.Log(blocksToRemove);
+                gridSystem.RemoveBlocks(blocksToRemove);
+            }
+        }
+    }
+    
     public void SaveLevel()
     {
         string fileName = fileNameInput.text;
@@ -142,13 +175,30 @@ public class LevelManager : MonoBehaviour
         isPlacingBlocks = true;
         ToggleUIElement(startPlacingButton, false);
         ToggleUIElement(stopPlacingButton, true);
+        ToggleUIElement(startDeletingButton, true,false);
     }
 
     public void StopPlacingBlocks()
     {
         isPlacingBlocks = false;
-        ToggleUIElement(stopPlacingButton, false);
         ToggleUIElement(startPlacingButton, true);
+        ToggleUIElement(stopPlacingButton, false);
+        ToggleUIElement(startDeletingButton, true,true);
+    }
+
+    public void StartDeletingBlocks()
+    {
+        isDeletingBlocks = true;
+        ToggleUIElement(startDeletingButton, false);
+        ToggleUIElement(stopDeletingButton, true);
+        ToggleUIElement(startPlacingButton, true,false);
+    }
+    public void StopDeletingBlocks()
+    {
+        isDeletingBlocks = false;
+        ToggleUIElement(startDeletingButton, true);
+        ToggleUIElement(stopDeletingButton, false);
+        ToggleUIElement(startPlacingButton, true,true);
     }
     
     //setUIbutton gameobject active or interactive

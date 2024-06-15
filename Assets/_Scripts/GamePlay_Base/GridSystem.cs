@@ -147,16 +147,7 @@ public class GridSystem : MonoBehaviour
                         // Remove blocks if any matching pairs found
                         if (blocksToRemove.Count > 0)
                         {
-                            foreach (Block block in blocksToRemove)
-                            {
-                                if (grid[block.x, block.y, block.z] != null)
-                                {
-                                    grid[block.x, block.y, block.z] = null;
-                                    //emptyGrid[block.x, block.y, block.z] = Instantiate(wireCubePrefab, new Vector3(block.x, block.y, block.z), Quaternion.identity);
-                                    block.RemoveBlock(block);
-                                    removedBlocksCount++;
-                                }
-                            }
+                            removedBlocksCount = RemoveBlocks(blocksToRemove);
                         }
                     }
                 }
@@ -165,6 +156,22 @@ public class GridSystem : MonoBehaviour
         return removedBlocksCount;
     }
 
+    public int RemoveBlocks(List<Block> blocksToRemove)
+    {
+        int removedBlocksCount = 0;
+        foreach (Block block in blocksToRemove)
+        {
+            if (grid[block.x, block.y, block.z] != null)
+            {
+                grid[block.x, block.y, block.z] = null;
+                //emptyGrid[block.x, block.y, block.z] = Instantiate(wireCubePrefab, new Vector3(block.x, block.y, block.z), Quaternion.identity);
+                block.RemoveBlock(block);
+                removedBlocksCount++;
+            }
+        }
+        return removedBlocksCount;
+    }
+    
     public bool ValidSnap(Block block)
     {
         Vector3 position = block.transform.position;
