@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
             {
                 for (int z = 0; z < depth; z++)
                 {
-                    gridSystem.grid[x, y, z] = null;
+                    
                     currentBlock = gridSystem.grid[x, y, z];
                     blocksToRemove.Add(currentBlock);
                 }

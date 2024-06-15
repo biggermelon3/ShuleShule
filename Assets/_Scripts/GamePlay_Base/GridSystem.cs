@@ -162,13 +162,17 @@ public class GridSystem : MonoBehaviour
         int removedBlocksCount = 0;
         foreach (Block block in blocksToRemove)
         {
-            if (grid[block.x, block.y, block.z] != null)
+            if (block != null)
             {
-                grid[block.x, block.y, block.z] = null;
-                //emptyGrid[block.x, block.y, block.z] = Instantiate(wireCubePrefab, new Vector3(block.x, block.y, block.z), Quaternion.identity);
-                block.RemoveBlock(block);
-                removedBlocksCount++;
+                if (grid[block.x, block.y, block.z] != null)
+                {
+                    grid[block.x, block.y, block.z] = null;
+                    //emptyGrid[block.x, block.y, block.z] = Instantiate(wireCubePrefab, new Vector3(block.x, block.y, block.z), Quaternion.identity);
+                    block.RemoveBlock(block);
+                    removedBlocksCount++;
+                }
             }
+            
         }
         return removedBlocksCount;
     }
