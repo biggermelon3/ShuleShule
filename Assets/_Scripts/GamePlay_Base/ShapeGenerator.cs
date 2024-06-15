@@ -115,6 +115,7 @@ public class ShapeGenerator : MonoBehaviour
         float padding = 0.1f; // ±ß¾à´óÐ¡£¬¿ÉÒÔ¸ù¾ÝÐèÒªµ÷Õû
         collider.size += new Vector3(1 + padding, 1 + padding, 1 + padding);
         _Shape.transform.position = transform.position;
+        currentBlock = _Shape;
     }
 
     public void ShuffleColor()
