@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MiniGameConfig
   m_EditorClassIdentifier: 
   ProjectConf:
-    projectName: ShuleShule
+    projectName: "\u9F20\u4E86\u9F20\u4E86"
     Appid: wxf7ff5f07dd6ff64f
     CDN: 
     assetLoadType: 1
