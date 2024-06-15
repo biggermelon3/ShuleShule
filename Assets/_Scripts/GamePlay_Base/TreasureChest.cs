@@ -11,6 +11,7 @@ public class TreasureChest : MonoBehaviour
         if (CheckForTreasures() && !success)
         {
             Debug.Log("Success!");
+            EventManager.OnRoundComplete.Invoke();
             success = true;
         }
     }
