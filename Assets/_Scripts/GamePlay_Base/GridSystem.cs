@@ -29,6 +29,7 @@ public class GridSystem : MonoBehaviour
                 for (int z = 0; z < depth; z++)
                 {
                     grid[x, y, z] = null;
+                    
                 }
             }
         }

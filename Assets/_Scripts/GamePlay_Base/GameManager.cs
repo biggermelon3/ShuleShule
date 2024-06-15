@@ -38,12 +38,32 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         EventManager.OnRoundComplete.AddListener(DisplayRoundCompletePrompt);
+        EventManager.OnRoundCompleteRemoveBlock.AddListener(RemoveAllPrevRoundBlocks);
         EventManager.ProceedToNextLevel.AddListener(LoadLevel);
     }
 
     private void DisplayRoundCompletePrompt()
     {
         roundCompletePrompt.SetActive(true);
+    }
+
+    private void RemoveAllPrevRoundBlocks()
+    {
+        List<Block> blocksToRemove = new List<Block>();
+        Block currentBlock;
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                for (int z = 0; z < depth; z++)
+                {
+                    gridSystem.grid[x, y, z] = null;
+                    currentBlock = gridSystem.grid[x, y, z];
+                    blocksToRemove.Add(currentBlock);
+                }
+            }
+        }
+        gridSystem.RemoveBlocks(blocksToRemove);
     }
 
     private void Update()

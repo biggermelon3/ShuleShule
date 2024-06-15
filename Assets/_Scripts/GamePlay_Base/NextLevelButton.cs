@@ -15,6 +15,7 @@ public class NextLevelButton : MonoBehaviour
 
     public void LoadNextLevelOnClick()
     {
+        EventManager.OnRoundCompleteRemoveBlock.Invoke();
         EventManager.ProceedToNextLevel.Invoke("lvl1");
     }
 }
