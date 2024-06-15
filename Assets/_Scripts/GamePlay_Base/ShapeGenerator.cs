@@ -130,6 +130,7 @@ public class ShapeGenerator : MonoBehaviour
         {
             Color selectedShapeColor = GM.PickRandomColor();
             blocksInShape[x].GetComponent<Renderer>().material.color = selectedShapeColor;
+            blocksInShape[x].GetComponent<Block>().Initialize(selectedShapeColor);
         }
     }
 }

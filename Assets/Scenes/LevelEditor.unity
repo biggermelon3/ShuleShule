@@ -1401,9 +1401,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c1f07bd7a346e143a17d3e566175466, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _width_height_depth: {x: 4, y: 4, z: 10}
+  colorPalette:
+  - {fileID: 11400000, guid: 8cbb1a8eee2b91b479ae80a46ac8588a, type: 2}
+  allShapes:
+  - {fileID: 11400000, guid: 706743b85653596478170d3f0a1d4600, type: 2}
+  - {fileID: 11400000, guid: 320b38cd14f3d2849836c31b576671da, type: 2}
   gridSystem: {fileID: 763419419}
   blockPrefab: {fileID: 0}
-  colorPalette: {fileID: 11400000, guid: 9a2e7a74442a2bb48a7b165239ff7b90, type: 2}
   fileNameInput: {fileID: 1512130094}
   saveButton: {fileID: 137353043}
   loadButton: {fileID: 1496212686}
@@ -1439,8 +1444,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cedb309ad19aeb548a63613f9330a043, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 5
-  height: 5
+  width: 3
+  height: 4
   depth: 10
   goalCoords: {x: 0, y: 0, z: 0}
 --- !u!1 &776623192

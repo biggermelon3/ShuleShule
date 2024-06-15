@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     {
         if (lvlJsonName != "")
         {
-            LoadLevel();
+            LoadLevel(lvlJsonName);
         }
         else
         {
@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
         int index = Random.Range(0, colorBag.Count);
         Color pickedColor = colorBag[index];
         colorBag.RemoveAt(index); // ÒÆ³ýÒÑÑ¡ÑÕÉ«
-
+        Debug.Log(pickedColor);
         return pickedColor;
     }
 
@@ -136,9 +136,9 @@ public class GameManager : MonoBehaviour
     }
     
     /// ////////////////////////////////////////////////////////Load Levels////////////////////
-    public void LoadLevel()
+    public void LoadLevel(string lvlName)
     {
-        string fileName = lvlJsonName;
+        string fileName = lvlName;
         if (string.IsNullOrEmpty(fileName))
         {
             Debug.LogError("File name cannot be empty.");
@@ -154,6 +154,11 @@ public class GameManager : MonoBehaviour
             height = levelData.height;
             width = levelData.width;
             depth = levelData.depth;
+            
+            // Initialize colorPalette and allShapes from levelData
+            colorPalette = levelData.colors.ToArray()[0];
+            allShapes = levelData.shapes.ToArray();
+            
             gridSystem.LoadLevelData(levelData);
             Debug.Log("Level loaded from Resources/lvlFiles/" + fileName);
         }

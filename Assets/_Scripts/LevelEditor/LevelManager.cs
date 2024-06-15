@@ -5,9 +5,13 @@ using TMPro;
 using System.Collections.Generic;
 public class LevelManager : MonoBehaviour
 {
+    public Vector3 _width_height_depth;
+    public ColorSetting[] colorPalette;
+    public ShapeData[] allShapes;
+    
     public GridSystem gridSystem;
     public GameObject blockPrefab;
-    public ColorSetting colorPalette;
+    
     public TMP_InputField fileNameInput;
     public Button saveButton;
     public Button loadButton;
@@ -25,9 +29,9 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        if (colorPalette != null && colorPalette.colors.Length > 0)
+        if (colorPalette != null && colorPalette[0].colors.Length > 0)
         {
-            selectedColor = colorPalette.colors[0];
+            selectedColor = colorPalette[0].colors[0];
         }
 
         //search for private references
@@ -38,7 +42,7 @@ public class LevelManager : MonoBehaviour
         
         //loadResources
         blockPrefab = Resources.Load<GameObject>("Prefabs/Block");
-        gridSystem.InitializeGrid(5,5,10);
+        gridSystem.InitializeGrid((int)_width_height_depth.x,(int)_width_height_depth.y,(int)_width_height_depth.z);
         
         //UI Events
         saveButton.onClick.AddListener(SaveLevel);
@@ -70,7 +74,7 @@ public class LevelManager : MonoBehaviour
 
         if (colorPalette != null)
         {
-            foreach (Color color in colorPalette.colors)
+            foreach (Color color in colorPalette[0].colors)
             {
                 GameObject colorButton = Instantiate(colorButtonPrefab, colorButtonContainer.transform);
                 colorButton.GetComponent<Image>().color = color;
@@ -212,7 +216,7 @@ public class LevelManager : MonoBehaviour
     public LevelData GenerateLevelData()
     {
         LevelData levelData = new LevelData(gridSystem.width, gridSystem.height, gridSystem.depth);
-
+        
         for (int x = 0; x < gridSystem.width; x++)
         {
             for (int y = 0; y < gridSystem.height; y++)
@@ -227,6 +231,17 @@ public class LevelManager : MonoBehaviour
                     }
                 }
             }
+        }
+        // 保存颜色数据
+        foreach (ColorSetting color in colorPalette)
+        {
+            levelData.colors.Add(color);
+        }
+
+        // 保存形状数据
+        foreach (ShapeData shape in allShapes)
+        {
+            levelData.shapes.Add(shape);
         }
 
         return levelData;

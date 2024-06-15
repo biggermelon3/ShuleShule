@@ -8,13 +8,18 @@ public class LevelData
     public int width;
     public int height;
     public int depth;
+    public List<ColorSetting> colors;
+    public List<ShapeData> shapes;
     public List<BlockData> blocks;
+    
 
     public LevelData(int width, int height, int depth)
     {
         this.width = width;
         this.height = height;
         this.depth = depth;
+        this.colors = new List<ColorSetting>();
+        this.shapes = new List<ShapeData>();
         this.blocks = new List<BlockData>();
     }
 }

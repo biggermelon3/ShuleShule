@@ -347,9 +347,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440c02d4fd44c624cbe385ef78b803e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSystem: {fileID: 143385485}
   startingZOffset: 0
   baseBlock: {fileID: 3846878600451461261, guid: 50c35893665e43f409638695783366c2, type: 3}
+  isInLevelEditor: 0
 --- !u!1 &65313179
 GameObject:
   m_ObjectHideFlags: 0
@@ -468,7 +468,7 @@ MonoBehaviour:
   width: 0
   height: 0
   depth: 0
-  lvlJsonName: lvl1
+  lvlJsonName: lvl0
   colorPalette: {fileID: 11400000, guid: 9a2e7a74442a2bb48a7b165239ff7b90, type: 2}
   allShapes:
   - {fileID: 11400000, guid: 706743b85653596478170d3f0a1d4600, type: 2}
