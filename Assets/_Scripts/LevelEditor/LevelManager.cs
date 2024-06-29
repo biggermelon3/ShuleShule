@@ -12,6 +12,7 @@ public class LevelManager : MonoBehaviour
     public GridSystem gridSystem;
     public GameObject blockPrefab;
     
+    public TMP_InputField levelTimeInput; 
     public TMP_InputField fileNameInput;
     public Button saveButton;
     public Button loadButton;
@@ -64,7 +65,8 @@ public class LevelManager : MonoBehaviour
             HandleBlockDeleting();
         }
     }
-
+    
+    // update the colors from the color palette to the UI
     private void InitializeColorButtons()
     {
         foreach (Transform child in colorButtonContainer.transform)
@@ -135,7 +137,7 @@ public class LevelManager : MonoBehaviour
             }
         }
     }
-    
+    //save data into a json file
     public void SaveLevel()
     {
         string fileName = fileNameInput.text;
@@ -144,14 +146,20 @@ public class LevelManager : MonoBehaviour
             Debug.LogError("File name cannot be empty.");
             return;
         }
-
-        LevelData levelData = GenerateLevelData();
+        
+        if (!int.TryParse(levelTimeInput.text, out int levelTime))
+        {
+            Debug.LogError("Invalid level time.");
+            return;
+        }
+        
+        LevelData levelData = GenerateLevelData(levelTime);
         string json = JsonUtility.ToJson(levelData);
         string path = Path.Combine(Application.dataPath, fileName + ".json");
         File.WriteAllText(path, json);
         Debug.Log("Level saved to " + path);
     }
-
+    //load level from the json file--it will create temperate scriptable objects for the gridsystem to run with the existing code
     public void LoadLevel()
     {
         string fileName = fileNameInput.text;
@@ -169,7 +177,8 @@ public class LevelManager : MonoBehaviour
             _width_height_depth.x = levelData.width;
             _width_height_depth.y = levelData.height;
             _width_height_depth.z = levelData.depth;
-            // Initialize colorPalette and allShapes from levelData
+            levelTimeInput.text = levelData.levelTime.ToString(); //LevelTimerSetting
+            
             // Initialize colorPalette and allShapes from levelData
             colorPalette = ScriptableObject.CreateInstance<ColorSetting>();
             colorPalette.colors = levelData.colors.ToArray();
@@ -230,9 +239,9 @@ public class LevelManager : MonoBehaviour
         UIbutton.gameObject.SetActive(OnAndOff);
     }
     
-    public LevelData GenerateLevelData()
+    public LevelData GenerateLevelData(int levelTime = 600)
     {
-        LevelData levelData = new LevelData(gridSystem.width, gridSystem.height, gridSystem.depth);
+        LevelData levelData = new LevelData(gridSystem.width, gridSystem.height, gridSystem.depth, levelTime);
         
         for (int x = 0; x < gridSystem.width; x++)
         {

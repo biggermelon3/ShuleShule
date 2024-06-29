@@ -5,6 +5,7 @@ using UnityEngine;
 [Serializable]
 public class LevelData
 {
+    public int levelTime;
     public int width;
     public int height;
     public int depth;
@@ -12,8 +13,9 @@ public class LevelData
     public List<ShapeDataSerializable> shapes;  // 存储可序列化的形状数据
     public List<BlockData> blocks;
 
-    public LevelData(int width, int height, int depth)
+    public LevelData(int width, int height, int depth, int levelTime = 600 )
     {
+        this.levelTime = levelTime;
         this.width = width;
         this.height = height;
         this.depth = depth;

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GameManager
   - block
+  - CountDown
   layers:
   - Default
   - TransparentFX
