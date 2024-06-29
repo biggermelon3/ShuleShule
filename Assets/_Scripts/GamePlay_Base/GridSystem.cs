@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System.Linq;
+using System;
+
 
 public class GridSystem : MonoBehaviour
 {
@@ -12,8 +15,12 @@ public class GridSystem : MonoBehaviour
     private GameObject[,,] emptyGrid;
     [SerializeField]
     private Vector3 goalCoords;
-    
-    
+
+    private void Start()
+    {
+        List<Color> test = ReadColorPercentages();
+    }
+
     public Block[,,] InitializeGrid(int width, int height, int depth)
     {
         this.width = width;
@@ -44,7 +51,6 @@ public class GridSystem : MonoBehaviour
             ClearGrid();
         }
         
-
         GameObject blockPrefab = Resources.Load<GameObject>("Prefabs/Block");
         foreach (var blockData in levelData.blocks)
         {
@@ -104,7 +110,7 @@ public class GridSystem : MonoBehaviour
                 {
                     if (grid[x, y, z] != null)
                     {
-                        Object.Destroy(grid[x, y, z].gameObject);
+                        Destroy(grid[x, y, z].gameObject);
                         grid[x, y, z] = null;
                     }
                 }
@@ -300,5 +306,20 @@ public class GridSystem : MonoBehaviour
 
         block.transform.position = new Vector3(closestX, closestY, newZ);
         return AddBlock(closestX, closestY, newZ, block); // Add to the grid system
+    }
+
+    private List<Color> ReadColorPercentages()
+    {
+        List<Color> allZColor = new List<Color>();
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < width; y++)
+            {
+                int z = GetHighestZ(x, y) + 1;
+                Block b = grid[x, y, z];
+                allZColor.Add(b.BlockColor);
+            }
+        }
+        return allZColor;
     }
 }
