@@ -18,7 +18,7 @@ public class GridSystem : MonoBehaviour
 
     private void Start()
     {
-        List<Color> test = ReadColorPercentages();
+        //List<Color> test = ReadColorPercentages();
     }
 
     public Block[,,] InitializeGrid(int width, int height, int depth)
