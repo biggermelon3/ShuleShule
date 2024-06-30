@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ShapeGenerator : MonoBehaviour
 {
@@ -49,7 +50,11 @@ public class ShapeGenerator : MonoBehaviour
             GameObject block = Instantiate(blockPrefab);
             
             block.transform.position = new Vector3(blockPosition.x, blockPosition.y, 0);
-            Color selectedShapeColor = GM.PickRandomColor();
+            //Color selectedShapeColor = GM.PickRandomColor();
+            Color selectedShapeColor = GetRandomColorBaseOnChance();
+
+
+
             prevColors.Add(selectedShapeColor);
             block.GetComponent<Renderer>().material.color = selectedShapeColor; // Ó¦ÓÃÑÕÉ«
             block.transform.parent = _Shape.transform; // ÉèÖÃ¸¸¶ÔÏóÒÔ±£³Ö²ã¼¶ÇåÎú
@@ -116,6 +121,33 @@ public class ShapeGenerator : MonoBehaviour
         collider.size += new Vector3(1 + padding, 1 + padding, 1 + padding);
         _Shape.transform.position = transform.position;
         currentBlock = _Shape;
+    }
+
+    private Color GetRandomColorBaseOnChance()
+    {
+        float random = Random.Range(0f,1f);
+        float numForAdding = 0;
+        float total = 0;
+        Color badColor = Color.white;
+        foreach (KeyValuePair<Color, float> cP in GM.gridSystem.colorPickPercentage)
+        {
+            total += cP.Value;
+        }
+        Debug.Log("total color chances " + total);
+
+        foreach (KeyValuePair<Color, float> cP in GM.gridSystem.colorPickPercentage)
+        {
+            if (cP.Value / total + numForAdding >= random)
+            {
+                return cP.Key;
+            }
+            else
+            {
+                numForAdding += cP.Value / total;
+            }
+        }
+        return badColor;
+
     }
 
     public void ShuffleColor()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour
         EventManager.OnRoundComplete.AddListener(DisplayRoundCompletePrompt);
         EventManager.OnRoundCompleteRemoveBlock.AddListener(RemoveAllPrevRoundBlocks);
         EventManager.ProceedToNextLevel.AddListener(LoadLevel);
+        gridSystem.ReadColorPercentages(0);
     }
 
     private void DisplayRoundCompletePrompt()

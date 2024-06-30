@@ -16,10 +16,13 @@ public class GridSystem : MonoBehaviour
     [SerializeField]
     private Vector3 goalCoords;
 
+    public Dictionary<Color, float> colorPickPercentage = new Dictionary<Color, float>();
+
     private void Start()
     {
-        //List<Color> test = ReadColorPercentages();
+        EventManager.OnDraggablePlaced.AddListener(ReadColorPercentages);
     }
+
 
     public Block[,,] InitializeGrid(int width, int height, int depth)
     {
@@ -308,9 +311,10 @@ public class GridSystem : MonoBehaviour
         return AddBlock(closestX, closestY, newZ, block); // Add to the grid system
     }
 
-    private List<Color> ReadColorPercentages()
+    public void ReadColorPercentages(int i)//i is useless, just need to be called when things are placed
     {
         List<Color> allZColor = new List<Color>();
+        colorPickPercentage = new Dictionary<Color, float>();
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < width; y++)
@@ -318,8 +322,21 @@ public class GridSystem : MonoBehaviour
                 int z = GetHighestZ(x, y) + 1;
                 Block b = grid[x, y, z];
                 allZColor.Add(b.BlockColor);
+                if (!colorPickPercentage.ContainsKey(b.BlockColor))
+                {
+                    colorPickPercentage.Add(b.BlockColor, 1);
+                }
+                else
+                {
+                    colorPickPercentage[b.BlockColor] += 1;
+ 
+                }
             }
         }
-        return allZColor;
+
+        foreach (KeyValuePair<Color, float> c in colorPickPercentage)
+        {
+            //Debug.Log("color percentage of " + c.Key + " " + c.Value);
+        }
     }
 }
