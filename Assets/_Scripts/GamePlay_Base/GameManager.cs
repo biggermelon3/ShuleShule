@@ -211,5 +211,6 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Saved level file not found in Resources/lvlFiles/" + fileName);
         }
+        gridSystem.ReadColorPercentages(0);
     }
 }

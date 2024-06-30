@@ -320,23 +320,29 @@ public class GridSystem : MonoBehaviour
             for (int y = 0; y < width; y++)
             {
                 int z = GetHighestZ(x, y) + 1;
-                Block b = grid[x, y, z];
-                allZColor.Add(b.BlockColor);
-                if (!colorPickPercentage.ContainsKey(b.BlockColor))
+                if (z < 10)
                 {
-                    colorPickPercentage.Add(b.BlockColor, 1);
+                    if (grid[x, y, z] != null)
+                    {
+                        Block b = grid[x, y, z];
+                        allZColor.Add(b.BlockColor);
+                        if (!colorPickPercentage.ContainsKey(b.BlockColor))
+                        {
+                            colorPickPercentage.Add(b.BlockColor, 1);
+                        }
+                        else
+                        {
+                            colorPickPercentage[b.BlockColor] += 1;
+
+                        }
+                    }
                 }
-                else
-                {
-                    colorPickPercentage[b.BlockColor] += 1;
- 
-                }
+
             }
         }
-
         foreach (KeyValuePair<Color, float> c in colorPickPercentage)
         {
-            //Debug.Log("color percentage of " + c.Key + " " + c.Value);
+            Debug.Log("color percentage of " + c.Key + " " + c.Value);
         }
     }
 }
