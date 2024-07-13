@@ -63,7 +63,7 @@ public class GridSystem : MonoBehaviour
             Block blockComponent = blockObject.GetComponent<Block>();
             blockComponent.Initialize(blockData.color);
             AddBlock(blockData.x, blockData.y, blockData.z, blockComponent);
-            Debug.Log(AddBlock(blockData.x, blockData.y, blockData.z, blockComponent));
+            //Debug.Log(AddBlock(blockData.x, blockData.y, blockData.z, blockComponent));
         }
     }
     
@@ -123,11 +123,13 @@ public class GridSystem : MonoBehaviour
     }
     
     
-    //normal check remove block
-    public int CheckAndRemoveBlocks()
+    //return the list of removed blcoks, or return null is no blocks are removable
+    public List<Block> CheckAndRemoveBlocks()
     {
         bool[,,] visited = new bool[width, height, depth];
-        int removedBlocksCount = 0;
+
+        List<Block> blocksToRemove = new List<Block>();
+        HashSet<Block> blocksSet = new HashSet<Block>();
 
         for (int x = 0; x < width; x++)
         {
@@ -139,66 +141,65 @@ public class GridSystem : MonoBehaviour
                     if (grid[x, y, z] != null)
                     {
                         Block currentBlock = grid[x, y, z];
-                        List<Block> blocksToRemove = new List<Block>();
 
                         // Check above
                         if (z + 1 < depth && grid[x, y, z + 1] != null && grid[x, y, z + 1].BlockColor == currentBlock.BlockColor)
                         {
-                            blocksToRemove.Add(currentBlock);
-                            blocksToRemove.Add(grid[x, y, z + 1]);
+                            if (!blocksSet.Contains(currentBlock))
+                            {
+                                blocksToRemove.Add(currentBlock);
+                                blocksSet.Add(currentBlock);
+                            }
+                            if (!blocksSet.Contains(grid[x, y, z + 1]))
+                            {
+                                blocksToRemove.Add(grid[x, y, z + 1]);
+                                blocksSet.Add(grid[x, y, z + 1]);
+                            }
                         }
 
                         // Check below
                         if (z - 1 >= 0 && grid[x, y, z - 1] != null && grid[x, y, z - 1].BlockColor == currentBlock.BlockColor)
                         {
-                            blocksToRemove.Add(currentBlock);
-                            blocksToRemove.Add(grid[x, y, z - 1]);
-                        }
-
-                        // Remove blocks if any matching pairs found
-                        if (blocksToRemove.Count > 0)
-                        {
-                            removedBlocksCount = RemoveBlocks(blocksToRemove);
+                            if (!blocksSet.Contains(currentBlock))
+                            {
+                                blocksToRemove.Add(currentBlock);
+                                blocksSet.Add(currentBlock);
+                            }
+                            if (!blocksSet.Contains(grid[x, y, z - 1]))
+                            {
+                                blocksToRemove.Add(grid[x, y, z - 1]);
+                                blocksSet.Add(grid[x, y, z - 1]);
+                            }
                         }
                     }
                 }
             }
         }
-        return removedBlocksCount;
-    }
 
-    public void CheckGameOver()
-    {
-        Debug.Log("Check Game Over");
-        for (int x = 0; x < width; x++)
+        // Remove blocks if any matching pairs found
+        if (blocksToRemove.Count > 0)
         {
-            for (int y = 0; y < height; y++)
-            {
-                int z = GetHighestZ(x, y);
-                Debug.Log("checking game over, highest z is " + (depth - z - 1));
-                if ((depth - z - 1) >= depth) 
-                {
-                    EventManager.GameOver.Invoke();
-                }
-            }
+            RemoveBlocks(blocksToRemove);
+            return blocksToRemove;
         }
+        return null;
     }
+    
 
     //special remove function
-    public int SpecialRemove(GameManager.SpecialShapes specialShapes)
+    public List<Block> SpecialRemove(GameManager.SpecialShapes specialShapes)
     {
         if(specialShapes == GameManager.SpecialShapes.Bomb_Shape)
         {
 
         }
 
-        return 0;
+        return null;
     }
 
     //removeblock function
-    public int RemoveBlocks(List<Block> blocksToRemove)
+    public void RemoveBlocks(List<Block> blocksToRemove)
     {
-        int removedBlocksCount = 0;
         foreach (Block block in blocksToRemove)
         {
             if (block != null)
@@ -209,14 +210,29 @@ public class GridSystem : MonoBehaviour
                     //emptyGrid[block.x, block.y, block.z] = Instantiate(wireCubePrefab, new Vector3(block.x, block.y, block.z), Quaternion.identity);
                     EventManager.onBlockRemoved.Invoke(block.transform.position, block.BlockColor);
                     block.RemoveBlock(block);
-                    removedBlocksCount++;
                 }
             }
-            
         }
-        return removedBlocksCount;
     }
-    
+
+    //check if game is over
+    public void CheckGameOver()
+    {
+        Debug.Log("Check Game Over");
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                int z = GetHighestZ(x, y);
+                //Debug.Log("checking game over, highest z is " + (depth - z - 1));
+                if ((depth - z - 1) >= depth)
+                {
+                    EventManager.GameOver.Invoke();
+                }
+            }
+        }
+    }
+
     public bool ValidSnap(Block block)
     {
         Vector3 position = block.transform.position;

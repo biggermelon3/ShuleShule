@@ -110,6 +110,98 @@ public class GameManager : MonoBehaviour
         score += points;
     }
 
+    ////////////////////////////////////////////////////////Color Combo happyTime//////////////////////
+
+    //color Combo dictionary
+    private Dictionary<Color, int> colorCounts = new Dictionary<Color, int>();
+
+
+    //update color counts, the combo board
+    public void UpdateColorCounts(List<Block> blocks)
+    {
+        // temp dictionary for the new list
+        Dictionary<Color, int> newColorCounts = new Dictionary<Color, int>();
+
+        //update dictionary by selecting blocks with same colors
+        foreach (var block in blocks)
+        {
+            if (newColorCounts.ContainsKey(block.BlockColor))
+            {
+                newColorCounts[block.BlockColor]++;
+                Debug.Log("add one to the new colorCOunt");
+            }
+            else
+            {
+                newColorCounts[block.BlockColor] = 1;
+                Debug.Log("new colorCOunt");
+            }
+        }
+
+        // Update the main dic, add new colors into the main dic, if it doesnt exist add a new one
+        foreach (var kvp in newColorCounts)
+        {
+            if (colorCounts.ContainsKey(kvp.Key))
+            {
+                colorCounts[kvp.Key] += kvp.Value;
+                Debug.Log("old add value" + kvp.Value);
+            }
+            else
+            {
+                colorCounts[kvp.Key] = kvp.Value;
+                Debug.Log("new value" + kvp.Value);
+            }
+        }
+
+        // remove the color in the main dic that are not in the new dic
+        List<Color> keysToRemove = new List<Color>();
+        foreach (var color in colorCounts.Keys)
+        {
+            if (!newColorCounts.ContainsKey(color))
+            {
+                keysToRemove.Add(color);
+            }
+        }
+        foreach (var color in keysToRemove)
+        {
+            colorCounts.Remove(color);
+
+            Debug.Log("remove a color");
+        }
+        UpdateColorComboUI();
+    }
+
+    private void UpdateColorComboUI()
+    {
+        // Get the order, so that highest display on the top
+        var sortedColorCounts = new List<KeyValuePair<Color, int>>(colorCounts);
+        sortedColorCounts.Sort((firstPair, nextPair) =>
+        {
+            return nextPair.Value.CompareTo(firstPair.Value);
+        });
+
+        //TODO: index is the order, write UpdateColorDisplay function
+        for (int i = 0; i < sortedColorCounts.Count; i++)
+        {
+            var colorCount = sortedColorCounts[i];
+            UpdateColorDisplay(colorCount.Key, colorCount.Value, i);
+        }
+    }
+
+    private void UpdateColorDisplay(Color color, int count, int index)
+    {
+        Debug.Log($"Color: {color}, Count: {count/2}, Index: {index}");
+        // TODO:UIarray: colorDisplays
+        // colorDisplays[index].SetColor(color);
+        // colorDisplays[index].SetCount(count);
+    }
+
+    //clear dic and UI
+    public void ClearColorCounts()
+    {
+        colorCounts.Clear();
+        UpdateColorComboUI();
+    }
+
     ////////////////////////////////////////////////////////sceneManagement////////////////////
 
 

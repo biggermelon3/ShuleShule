@@ -15,6 +15,7 @@ public class Draggable : MonoBehaviour
 
     public List<int> tempZs = new List<int>();
 
+
     void Start()
     {
         mainCamera = Camera.main; // »ñÈ¡Ö÷Ïà»ú
@@ -30,6 +31,15 @@ public class Draggable : MonoBehaviour
         }
     }
 
+    //get mousePos
+    private Vector3 GetMouseWorldPos()
+    {
+        // ½«Êó±êÔÚÆÁÄ»ÉÏµÄÎ»ÖÃ×ª»»ÎªÔÚÊÀ½çÖÐµÄÎ»ÖÃ
+        Vector3 mousePoint = Input.mousePosition;
+        mousePoint.z = mainCamera.WorldToScreenPoint(gameObject.transform.position).z; // È·±£ÎïÌåÑØ×ÅZÖá²»ÒÆ¶¯
+        return mainCamera.ScreenToWorldPoint(mousePoint);
+    }
+
     void OnMouseDown()
     {
         InitializeBlockDict();
@@ -37,9 +47,7 @@ public class Draggable : MonoBehaviour
         {
             return;
         }
-        
-
-        // ¼ÆËãÎïÌåÓëÊó±êµã»÷µãµÄÆ«ÒÆÁ¿
+       
         offset = gameObject.transform.position - GetMouseWorldPos();
     }
 
@@ -127,7 +135,7 @@ public class Draggable : MonoBehaviour
             //TODO: check if blocks are valid, if one is not, then destroy all, else place all and spawn a new object
             if (block != null)
             {
-                Debug.Log(GM.gridSystem.ValidSnap(block));
+                //Debug.Log(GM.gridSystem.ValidSnap(block));
                 validPlacement = GM.gridSystem.ValidSnap(block); // ¶ÔÆëÃ¿¸ö·½¿éµ½Grid
             }
         }
@@ -148,11 +156,10 @@ public class Draggable : MonoBehaviour
         {
             //TODO: make a beter wireFrame FUncion FK
             //GM.gridSystem.WireFrameTheGrid(GM.currentGrid);
-            //TODO: spawn in new shape
+            //spawn in new shape
             GM.ShapeGenerator.GenerateShape();
 
-            
-            //TODO: check each placed block to see if it is removeable
+            //check each placed block to see if it is removeable
             int newZCounter = 0;
             foreach (Transform child in transform)
             {
@@ -168,23 +175,23 @@ public class Draggable : MonoBehaviour
                     newZCounter++;
                 }
             }
-            // ¿ÉÑ¡£ºÔÚÕâÀïµ÷ÓÃ¼ì²éºÍÏû³ýÏàÍ¬ÑÕÉ«Á¬Ðø·½¿éµÄÂß¼­
-            int removedBlocksCount = GM.gridSystem.CheckAndRemoveBlocks();
+            //do the remove check
+            List<Block> removeBlockList = GM.gridSystem.CheckAndRemoveBlocks();
+            //calculate score
+            int removedBlocksCount = removeBlockList.Count();
             if (removedBlocksCount > 0)
             {
                 // ¸ù¾ÝÒÆ³ýµÄ·½¿éÊýÁ¿¸üÐÂÓÎÏ·Âß¼­£¬ÀýÈç¸üÐÂ·ÖÊý
                 GM.AddScore(removedBlocksCount);
             }
+            //calculate color combos
+            GM.UpdateColorCounts(removeBlockList);
+
             EventManager.OnDraggablePlaced.Invoke(GM.gridSystem.CheckEntireGridForHighestZ());
             EventManager.CheckGameOver.Invoke();
         }
     }
 
-    private Vector3 GetMouseWorldPos()
-    {
-        // ½«Êó±êÔÚÆÁÄ»ÉÏµÄÎ»ÖÃ×ª»»ÎªÔÚÊÀ½çÖÐµÄÎ»ÖÃ
-        Vector3 mousePoint = Input.mousePosition;
-        mousePoint.z = mainCamera.WorldToScreenPoint(gameObject.transform.position).z; // È·±£ÎïÌåÑØ×ÅZÖá²»ÒÆ¶¯
-        return mainCamera.ScreenToWorldPoint(mousePoint);
-    }
+
+
 }
