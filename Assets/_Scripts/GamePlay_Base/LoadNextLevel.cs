@@ -9,4 +9,9 @@ public class LoadNextLevel : MonoBehaviour
     {
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
     }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadSceneAsync(0);
+    }
 }
