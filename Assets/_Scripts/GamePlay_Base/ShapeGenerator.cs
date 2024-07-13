@@ -134,7 +134,7 @@ public class ShapeGenerator : MonoBehaviour
         {
             total += cP.Value;
         }
-        Debug.Log("total color chances " + total);
+        //Debug.Log("total color chances " + total);
 
         foreach (KeyValuePair<Color, float> cP in GM.gridSystem.colorPickPercentage)
         {

@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
         EventManager.OnRoundComplete.AddListener(DisplayRoundCompletePrompt);
         EventManager.OnRoundCompleteRemoveBlock.AddListener(RemoveAllPrevRoundBlocks);
         EventManager.ProceedToNextLevel.AddListener(LoadLevel);
+        EventManager.GameOver.AddListener(GameOver);
         gridSystem.ReadColorPercentages(0);
     }
 
@@ -219,5 +220,10 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Saved level file not found in Resources/lvlFiles/" + fileName);
         }
         gridSystem.ReadColorPercentages(0);
+    }
+
+    private void GameOver()
+    {
+        EventManager.GameOver.Invoke();
     }
 }

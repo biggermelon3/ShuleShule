@@ -150,6 +150,8 @@ public class Draggable : MonoBehaviour
             //GM.gridSystem.WireFrameTheGrid(GM.currentGrid);
             //TODO: spawn in new shape
             GM.ShapeGenerator.GenerateShape();
+
+            
             //TODO: check each placed block to see if it is removeable
             int newZCounter = 0;
             foreach (Transform child in transform)
@@ -174,6 +176,7 @@ public class Draggable : MonoBehaviour
                 GM.AddScore(removedBlocksCount);
             }
             EventManager.OnDraggablePlaced.Invoke(GM.gridSystem.CheckEntireGridForHighestZ());
+            EventManager.CheckGameOver.Invoke();
         }
     }
 

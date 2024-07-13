@@ -10,4 +10,6 @@ public static class EventManager
     public static UnityEvent OnRoundComplete = new UnityEvent();
     public static UnityEvent OnRoundCompleteRemoveBlock = new UnityEvent();
     public static UnityEvent<string> ProceedToNextLevel = new UnityEvent<string>();
+    public static UnityEvent CheckGameOver = new UnityEvent();
+    public static UnityEvent GameOver = new UnityEvent();
 }

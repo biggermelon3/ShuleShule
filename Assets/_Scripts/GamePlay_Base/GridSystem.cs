@@ -21,6 +21,7 @@ public class GridSystem : MonoBehaviour
     private void Start()
     {
         EventManager.OnDraggablePlaced.AddListener(ReadColorPercentages);
+        EventManager.CheckGameOver.AddListener(CheckGameOver);
     }
 
 
@@ -164,6 +165,23 @@ public class GridSystem : MonoBehaviour
             }
         }
         return removedBlocksCount;
+    }
+
+    public void CheckGameOver()
+    {
+        Debug.Log("Check Game Over");
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                int z = GetHighestZ(x, y);
+                Debug.Log("checking game over, highest z is " + (depth - z - 1));
+                if ((depth - z - 1) >= depth) 
+                {
+                    EventManager.GameOver.Invoke();
+                }
+            }
+        }
     }
 
     //special remove function
@@ -345,7 +363,6 @@ public class GridSystem : MonoBehaviour
                         else
                         {
                             colorPickPercentage[b.BlockColor] += 1;
-
                         }
                     }
                 }
@@ -354,7 +371,7 @@ public class GridSystem : MonoBehaviour
         }
         foreach (KeyValuePair<Color, float> c in colorPickPercentage)
         {
-            Debug.Log("color percentage of " + c.Key + " " + c.Value);
+            //Debug.Log("color percentage of " + c.Key + " " + c.Value);
         }
     }
 }
