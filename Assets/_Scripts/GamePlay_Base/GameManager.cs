@@ -89,9 +89,16 @@ public class GameManager : MonoBehaviour
     // ÑÕÉ«"±³°ü"ÁÐ±í
     private List<Color> colorBag = new List<Color>();
     private ShapeData lastPickedShape = null;
+    public enum SpecialShapes
+    {
+        Bomb_Shape
+        //TODO:add more spcial shapes here
+
+    }
+
 
     public ShapeGenerator ShapeGenerator;
-
+    //scores
     public int score = 0;
     public static int _HIGHSCORE = 0;
     public GameObject _ScoreObject;

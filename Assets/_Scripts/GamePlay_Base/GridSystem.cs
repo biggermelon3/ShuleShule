@@ -122,7 +122,7 @@ public class GridSystem : MonoBehaviour
     }
     
     
-    
+    //normal check remove block
     public int CheckAndRemoveBlocks()
     {
         bool[,,] visited = new bool[width, height, depth];
@@ -166,6 +166,18 @@ public class GridSystem : MonoBehaviour
         return removedBlocksCount;
     }
 
+    //special remove function
+    public int SpecialRemove(GameManager.SpecialShapes specialShapes)
+    {
+        if(specialShapes == GameManager.SpecialShapes.Bomb_Shape)
+        {
+
+        }
+
+        return 0;
+    }
+
+    //removeblock function
     public int RemoveBlocks(List<Block> blocksToRemove)
     {
         int removedBlocksCount = 0;
