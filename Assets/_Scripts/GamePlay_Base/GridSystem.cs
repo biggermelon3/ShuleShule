@@ -207,6 +207,7 @@ public class GridSystem : MonoBehaviour
                 {
                     grid[block.x, block.y, block.z] = null;
                     //emptyGrid[block.x, block.y, block.z] = Instantiate(wireCubePrefab, new Vector3(block.x, block.y, block.z), Quaternion.identity);
+                    EventManager.onBlockRemoved.Invoke(block.transform.position, block.BlockColor);
                     block.RemoveBlock(block);
                     removedBlocksCount++;
                 }
