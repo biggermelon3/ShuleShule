@@ -145,13 +145,14 @@ public class ShapeGenerator : MonoBehaviour
         GameObject _Shape = new GameObject("SpecialShape");
         _Shape.transform.position = Vector3.zero;
         Draggable dragcomponet = _Shape.AddComponent<Draggable>();
+        dragcomponet.ShapeType = GameManager.SpecialShapes.Bomb_Shape;//TODO: add more possibiablity
 
         Vector3 minBounds = Vector3.positiveInfinity;
         Vector3 maxBounds = Vector3.negativeInfinity;
 
         GameObject block = Instantiate(blockPrefab);
         block.transform.position = Vector3.zero;
-        Color specialColor = Color.red; // 设置特殊方块的颜色
+        Color specialColor = Color.white; // temp color to white,TODO: set it to a new material with bomb
         block.GetComponent<Renderer>().material.color = specialColor;
         block.transform.parent = _Shape.transform;
 
@@ -169,6 +170,11 @@ public class ShapeGenerator : MonoBehaviour
         collider.size += new Vector3(1 + padding, 1 + padding, 1 + padding);
         _Shape.transform.position = transform.position;
         currentBlock = _Shape;
+    }
+    //change the state
+    public void SetColorComboEffect(bool isActive)
+    {
+        isColorComboEffectActive = isActive;
     }
 
     private Color GetRandomColorBaseOnChance()

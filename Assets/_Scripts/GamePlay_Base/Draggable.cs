@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Draggable : MonoBehaviour
@@ -14,6 +15,8 @@ public class Draggable : MonoBehaviour
     public List<Vector2> allXY = new List<Vector2>();
 
     public List<int> tempZs = new List<int>();
+
+    public GameManager.SpecialShapes ShapeType = GameManager.SpecialShapes.Basic;
 
 
     void Start()
@@ -175,8 +178,21 @@ public class Draggable : MonoBehaviour
                     newZCounter++;
                 }
             }
-            //do the remove check
-            List<Block> removeBlockList = GM.gridSystem.CheckAndRemoveBlocks();
+            List<Block> removeBlockList = null;
+            if (ShapeType != GameManager.SpecialShapes.Basic)
+            {
+                //do special remove check
+                Block centerblock = transform.GetChild(0).GetComponent<Block>();
+                removeBlockList = GM.gridSystem.SpecialRemove(ShapeType, centerblock);
+            }
+            else
+            {
+                //do the normal remove check
+                removeBlockList = GM.gridSystem.CheckAndRemoveBlocks();
+                //calculate color combos
+                GM.UpdateColorCounts(removeBlockList);
+            }
+            
             //calculate score
             int removedBlocksCount = 0;
             if(removeBlockList != null)
@@ -189,8 +205,7 @@ public class Draggable : MonoBehaviour
                 // ¸ù¾ÝÒÆ³ýµÄ·½¿éÊýÁ¿¸üÐÂÓÎÏ·Âß¼­£¬ÀýÈç¸üÐÂ·ÖÊý
                 GM.AddScore(removedBlocksCount);
             }
-            //calculate color combos
-            GM.UpdateColorCounts(removeBlockList);
+            
 
             EventManager.OnDraggablePlaced.Invoke(GM.gridSystem.CheckEntireGridForHighestZ());
             EventManager.CheckGameOver.Invoke();

@@ -187,14 +187,46 @@ public class GridSystem : MonoBehaviour
     
 
     //special remove function
-    public List<Block> SpecialRemove(GameManager.SpecialShapes specialShapes)
+    public List<Block> SpecialRemove(GameManager.SpecialShapes specialShapes, Block centerblock)
     {
-        if(specialShapes == GameManager.SpecialShapes.Bomb_Shape)
+        List<Block> blocksToRemove = new List<Block>();
+        Debug.Log("bomb");
+        if (specialShapes == GameManager.SpecialShapes.Bomb_Shape)
         {
+            int x = centerblock.x;
+            int y = centerblock.y;
+            int z = centerblock.z;
 
+            // get blocks around the center
+            AddBlockToRemoveList(blocksToRemove, x + 1, y, z); // 右边
+            AddBlockToRemoveList(blocksToRemove, x - 1, y, z); // 左边
+            AddBlockToRemoveList(blocksToRemove, x, y + 1, z); // 上面
+            AddBlockToRemoveList(blocksToRemove, x, y - 1, z); // 下面
+            AddBlockToRemoveList(blocksToRemove, x, y, z + 1); // 前面
+            AddBlockToRemoveList(blocksToRemove, x, y, z - 1); // 后面
+
+            // 添加中心方块
+            blocksToRemove.Add(centerblock);
+
+            // 移除这些方块
+            RemoveBlocks(blocksToRemove);
+
+            return blocksToRemove;
         }
 
         return null;
+    }
+
+    private void AddBlockToRemoveList(List<Block> blocksToRemove, int x, int y, int z)
+    {
+        if (x >= 0 && x < width && y >= 0 && y < height && z >= 0 && z < depth)
+        {
+            Block block = grid[x, y, z];
+            if (block != null && !blocksToRemove.Contains(block))
+            {
+                blocksToRemove.Add(block);
+            }
+        }
     }
 
     //removeblock function

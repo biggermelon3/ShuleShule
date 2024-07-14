@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
     private ShapeData lastPickedShape = null;
     public enum SpecialShapes
     {
+        Basic,
         Bomb_Shape
         //TODO:add more spcial shapes here
 
@@ -191,6 +192,7 @@ public class GameManager : MonoBehaviour
     {
         isEffectActive = true;
         Debug.Log("Combo effect triggered!");
+        ShapeGenerator.SetColorComboEffect(isEffectActive);
 
         // TODO: put vfx there
         // TODO: spawn only special bomb here
@@ -199,6 +201,7 @@ public class GameManager : MonoBehaviour
 
         // colorcombo ends
         isEffectActive = false;
+        ShapeGenerator.SetColorComboEffect(isEffectActive);
         ClearColorCounts();
     }
 
