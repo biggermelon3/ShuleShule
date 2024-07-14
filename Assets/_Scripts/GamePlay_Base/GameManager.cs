@@ -163,7 +163,7 @@ public class GameManager : MonoBehaviour
             }
 
             // check if it trigger the combo effect
-            if (colorCounts[kvp.Key] >= comboThreshold && !isEffectActive)
+            if (colorCounts[kvp.Key]/2 >= comboThreshold && !isEffectActive)
             {
                 StartCoroutine(TriggerComboEffect(effectDuration));
             }

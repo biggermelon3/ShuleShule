@@ -152,8 +152,10 @@ public class ShapeGenerator : MonoBehaviour
 
         GameObject block = Instantiate(blockPrefab);
         block.transform.position = Vector3.zero;
-        Color specialColor = Color.white; // temp color to white,TODO: set it to a new material with bomb
+        Color specialColor = Color.white; // temp color to white,TODO: set it to a new object with bomb
+        
         block.GetComponent<Renderer>().material.color = specialColor;
+        block.GetComponent<Renderer>().material = Resources.Load<Material>("Bomb_Mat");
         block.transform.parent = _Shape.transform;
 
         Block blockComponent = block.GetComponent<Block>();
