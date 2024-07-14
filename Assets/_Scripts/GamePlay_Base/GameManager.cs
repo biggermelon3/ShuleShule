@@ -114,6 +114,11 @@ public class GameManager : MonoBehaviour
 
     //color Combo dictionary
     private Dictionary<Color, int> colorCounts = new Dictionary<Color, int>();
+    
+    public int comboThreshold = 10; // how many blocks to trigger color combo
+    public float effectDuration = 5.0f; // how long does the effect last
+    private bool isEffectActive = false;
+
 
 
     //update color counts, the combo board
@@ -150,6 +155,12 @@ public class GameManager : MonoBehaviour
                 colorCounts[kvp.Key] = kvp.Value;
                 Debug.Log("new value" + kvp.Value);
             }
+
+            // check if it trigger the combo effect
+            if (colorCounts[kvp.Key] >= comboThreshold && !isEffectActive)
+            {
+                StartCoroutine(TriggerComboEffect(effectDuration));
+            }
         }
 
         // remove the color in the main dic that are not in the new dic
@@ -169,6 +180,23 @@ public class GameManager : MonoBehaviour
         }
         UpdateColorComboUI();
     }
+
+    //the color combo effect!!!!
+    private IEnumerator TriggerComboEffect(float duration)
+    {
+        isEffectActive = true;
+        Debug.Log("Combo effect triggered!");
+
+        // TODO: put vfx there
+        // TODO: spawn only special bomb here
+
+        yield return new WaitForSeconds(duration);
+
+        // colorcombo ends
+        isEffectActive = false;
+        ClearColorCounts();
+    }
+
 
     private void UpdateColorComboUI()
     {
