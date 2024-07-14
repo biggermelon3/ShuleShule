@@ -128,19 +128,24 @@ public class GameManager : MonoBehaviour
         Dictionary<Color, int> newColorCounts = new Dictionary<Color, int>();
 
         //update dictionary by selecting blocks with same colors
-        foreach (var block in blocks)
+        if (blocks != null)
         {
-            if (newColorCounts.ContainsKey(block.BlockColor))
+            foreach (var block in blocks)
             {
-                newColorCounts[block.BlockColor]++;
-                Debug.Log("add one to the new colorCOunt");
+                if (newColorCounts.ContainsKey(block.BlockColor))
+                {
+                    newColorCounts[block.BlockColor]++;
+                    Debug.Log("add one to the new colorCOunt");
+                }
+                else
+                {
+                    newColorCounts[block.BlockColor] = 1;
+                    Debug.Log("new colorCOunt");
+                }
             }
-            else
-            {
-                newColorCounts[block.BlockColor] = 1;
-                Debug.Log("new colorCOunt");
-            }
+
         }
+
 
         // Update the main dic, add new colors into the main dic, if it doesnt exist add a new one
         foreach (var kvp in newColorCounts)
@@ -214,10 +219,11 @@ public class GameManager : MonoBehaviour
             UpdateColorDisplay(colorCount.Key, colorCount.Value, i);
         }
     }
-
+    //TODO: even when count is 0, should still call UpdateColorDisplay, with count of 0
     private void UpdateColorDisplay(Color color, int count, int index)
     {
         Debug.Log($"Color: {color}, Count: {count/2}, Index: {index}");
+        EventManager.onColorComboEffectStatusCheck.Invoke(color, count/2, index);
         // TODO:UIarray: colorDisplays
         // colorDisplays[index].SetColor(color);
         // colorDisplays[index].SetCount(count);
