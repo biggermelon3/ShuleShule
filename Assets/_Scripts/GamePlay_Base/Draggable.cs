@@ -178,7 +178,12 @@ public class Draggable : MonoBehaviour
             //do the remove check
             List<Block> removeBlockList = GM.gridSystem.CheckAndRemoveBlocks();
             //calculate score
-            int removedBlocksCount = removeBlockList.Count();
+            int removedBlocksCount = 0;
+            if(removeBlockList != null)
+            {
+                removedBlocksCount = removeBlockList.Count();
+            }
+            
             if (removedBlocksCount > 0)
             {
                 // ¸ù¾ÝÒÆ³ýµÄ·½¿éÊýÁ¿¸üÐÂÓÎÏ·Âß¼­£¬ÀýÈç¸üÐÂ·ÖÊý

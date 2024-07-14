@@ -12,6 +12,7 @@ public class ShapeGenerator : MonoBehaviour
     private GameObject blockPrefab;
 
     private GameObject currentBlock;//stores the generated shape into this, for shuffling color
+    private bool isColorComboEffectActive = false;//track color combo
 
     private void Awake()
     {
@@ -28,6 +29,13 @@ public class ShapeGenerator : MonoBehaviour
     }
     public void GenerateShape()
     {
+        //color combo time
+        if (isColorComboEffectActive)
+        {
+            GenerateSpecialBlock();
+            return;
+        }
+
         // Ëæ»úÑ¡ÔñÒ»¸öÐÎ×´Êý¾Ý
         ShapeData selectedShape = GM.PickRandomShape();
         prevShape = selectedShape;
@@ -81,6 +89,12 @@ public class ShapeGenerator : MonoBehaviour
     
     public void GeneratePrevShape()
     {
+        if (isColorComboEffectActive)
+        {
+            GenerateSpecialBlock();
+            return;
+        }
+
         // Ëæ»úÑ¡ÔñÒ»¸öÐÎ×´Êý¾Ý
         ShapeData selectedShape = prevShape;
         prevShape = selectedShape;
@@ -119,6 +133,39 @@ public class ShapeGenerator : MonoBehaviour
         collider.size = maxBounds - minBounds;
 
         float padding = 0.1f; // ±ß¾à´óÐ¡£¬¿ÉÒÔ¸ù¾ÝÐèÒªµ÷Õû
+        collider.size += new Vector3(1 + padding, 1 + padding, 1 + padding);
+        _Shape.transform.position = transform.position;
+        currentBlock = _Shape;
+    }
+
+    //change basic shape to special items
+    private void GenerateSpecialBlock()
+    {
+        // use the same logic to the normal generation
+        GameObject _Shape = new GameObject("SpecialShape");
+        _Shape.transform.position = Vector3.zero;
+        Draggable dragcomponet = _Shape.AddComponent<Draggable>();
+
+        Vector3 minBounds = Vector3.positiveInfinity;
+        Vector3 maxBounds = Vector3.negativeInfinity;
+
+        GameObject block = Instantiate(blockPrefab);
+        block.transform.position = Vector3.zero;
+        Color specialColor = Color.red; // 设置特殊方块的颜色
+        block.GetComponent<Renderer>().material.color = specialColor;
+        block.transform.parent = _Shape.transform;
+
+        Block blockComponent = block.GetComponent<Block>();
+        blockComponent.Initialize(specialColor);
+
+        minBounds = Vector3.Min(minBounds, block.transform.position);
+        maxBounds = Vector3.Max(maxBounds, block.transform.position);
+
+        BoxCollider collider = _Shape.AddComponent<BoxCollider>();
+        collider.center = (minBounds + maxBounds) / 2;
+        collider.size = maxBounds - minBounds;
+
+        float padding = 0.1f;
         collider.size += new Vector3(1 + padding, 1 + padding, 1 + padding);
         _Shape.transform.position = transform.position;
         currentBlock = _Shape;
