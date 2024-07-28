@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1405,10 +1405,16 @@ MonoBehaviour:
   colorPalette: {fileID: 11400000, guid: 8cbb1a8eee2b91b479ae80a46ac8588a, type: 2}
   allShapes:
   - {fileID: 11400000, guid: 706743b85653596478170d3f0a1d4600, type: 2}
+  - {fileID: 11400000, guid: 93a23c0be76304806b3762a9194ff1bf, type: 2}
+  - {fileID: 11400000, guid: 080f23ab9776d487aaebeacbdc031e41, type: 2}
+  - {fileID: 11400000, guid: af2dc9d6d225d47f59694c2ecc324fb3, type: 2}
   - {fileID: 11400000, guid: 320b38cd14f3d2849836c31b576671da, type: 2}
+  - {fileID: 11400000, guid: b8604431ca6fa46a293a413395540450, type: 2}
+  - {fileID: 11400000, guid: 8a8cccb9b37ddf14b83db8a4849e6747, type: 2}
+  - {fileID: 11400000, guid: 35760a340994819409a757c055e6030f, type: 2}
   gridSystem: {fileID: 763419419}
   blockPrefab: {fileID: 0}
-  levelTimeInput: {fileID: 0}
+  levelTimeInput: {fileID: 1841881093}
   fileNameInput: {fileID: 1512130094}
   saveButton: {fileID: 137353043}
   loadButton: {fileID: 1496212686}
