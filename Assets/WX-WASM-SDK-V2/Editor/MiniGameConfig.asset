@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ProjectConf:
     projectName: 
-    Appid: 
+    Appid: wxf7ff5f07dd6ff64f
     CDN: 
-    assetLoadType: 0
+    assetLoadType: 1
     compressDataPackage: 0
     VideoUrl: 
-    DST: 
+    DST: C:/Users/rober/Desktop/SHUSHUWOYA
     StreamCDN: 
     bundleHashLength: 32
     bundlePathIdentifier: StreamingAssets;

@@ -11,12 +11,16 @@ public class UIManager : MonoBehaviour
 
     public GameObject scoreBoardParent;
     public GameObject scoreBoardDisplayElementPrefab;
+    public List<GameObject> scoreBoardList = new List<GameObject>();
     public Dictionary<Color, GameObject> scoreBoardDict = new Dictionary<Color, GameObject>();
 
     private void Start()
     {
         EventManager.GameOver.AddListener(PopupGameOver);
         EventManager.onColorComboEffectStatusCheck.AddListener(CheckColorComboScore);
+        EventManager.newOnCOlorComboEffectStatusCheck.AddListener(UpdateColorComboScoreDisplay);
+        EventManager.OnRoundComplete.AddListener(ClearAllComboScoreDisplay);
+
     }
 
     private void PopupGameOver()
@@ -27,19 +31,53 @@ public class UIManager : MonoBehaviour
         gameOverPopup.interactable = true;
     }
 
+    private void UpdateColorComboScoreDisplay(List<KeyValuePair<Color, int>> newSortedList)
+    {
+        for (int i = 0; i < scoreBoardList.Count; i++)
+        {
+            Destroy(scoreBoardList[i]);
+        }
+        scoreBoardList.Clear();
+        //scoreBoardDict.Clear();
+
+        for (int i = 0; i < newSortedList.Count; i++)
+        {
+            GameObject spawnedScoreBoardDisplayElement = Instantiate(scoreBoardDisplayElementPrefab);
+            spawnedScoreBoardDisplayElement.transform.parent = scoreBoardParent.transform;
+            spawnedScoreBoardDisplayElement.transform.localScale = Vector3.one;
+            spawnedScoreBoardDisplayElement.GetComponent<ColorComboScoreDisplay>().UpdateScoreDisplay(newSortedList[i].Value/2);
+            spawnedScoreBoardDisplayElement.GetComponent<ColorComboScoreDisplay>().UpdateColor(newSortedList[i].Key);
+
+            scoreBoardList.Add(spawnedScoreBoardDisplayElement);
+            //scoreBoardDic
+        }
+
+    }
+
+    private void ClearAllComboScoreDisplay()
+    {
+        for (int i = 0; i < scoreBoardList.Count; i++)
+        {
+            Destroy(scoreBoardList[i]);
+        }
+        scoreBoardList.Clear();
+    }
+
     private void CheckColorComboScore(Color c, int count, int index)
     {
+        Debug.Log("--------count " + count);
         if (scoreBoardDict.ContainsKey(c))
         {
+            Debug.Log("Check COlor combo score here");
             if (count == 0)
             {
+                Debug.Log("reset score here");
                 Destroy(scoreBoardDict[c].gameObject);
                 scoreBoardDict.Remove(c);
             }
             else
             {
                 scoreBoardDict[c].GetComponent<ColorComboScoreDisplay>().UpdateScoreDisplay(count);
-
             }
             //scoreBoardDict[c].transform.SetSiblingIndex(index);
         }

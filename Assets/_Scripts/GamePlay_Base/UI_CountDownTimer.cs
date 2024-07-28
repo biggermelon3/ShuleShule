@@ -43,6 +43,7 @@ public class UI_CountDownTimer : MonoBehaviour
     void OnCountdownEnd()
     {
         // 倒计时结束后的操作
+        EventManager.GameOver.Invoke();
         Debug.Log("Countdown ended!");
     }
 }

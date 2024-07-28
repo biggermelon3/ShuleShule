@@ -136,12 +136,12 @@ public class GameManager : MonoBehaviour
                 if (newColorCounts.ContainsKey(block.BlockColor))
                 {
                     newColorCounts[block.BlockColor]++;
-                    Debug.Log("add one to the new colorCOunt");
+                    //Debug.Log("add one to the new colorCOunt");
                 }
                 else
                 {
                     newColorCounts[block.BlockColor] = 1;
-                    Debug.Log("new colorCOunt");
+                    //Debug.Log("new colorCOunt");
                 }
             }
 
@@ -154,12 +154,12 @@ public class GameManager : MonoBehaviour
             if (colorCounts.ContainsKey(kvp.Key))
             {
                 colorCounts[kvp.Key] += kvp.Value;
-                Debug.Log("old add value" + kvp.Value);
+                //Debug.Log("old add value" + kvp.Value);
             }
             else
             {
                 colorCounts[kvp.Key] = kvp.Value;
-                Debug.Log("new value" + kvp.Value);
+                //Debug.Log("new value" + kvp.Value);
             }
 
             // check if it trigger the combo effect
@@ -181,8 +181,6 @@ public class GameManager : MonoBehaviour
         foreach (var color in keysToRemove)
         {
             colorCounts.Remove(color);
-
-            Debug.Log("remove a color");
         }
         UpdateColorComboUI();
     }
@@ -205,6 +203,7 @@ public class GameManager : MonoBehaviour
         ClearColorCounts();
     }
 
+    List<KeyValuePair<Color, int>> lastSortedColorCounts = new List<KeyValuePair<Color, int>>();
 
     private void UpdateColorComboUI()
     {
@@ -215,17 +214,15 @@ public class GameManager : MonoBehaviour
             return nextPair.Value.CompareTo(firstPair.Value);
         });
 
+
+        EventManager.newOnCOlorComboEffectStatusCheck.Invoke(sortedColorCounts);
+        //lastSortedColorCounts = sortedColorCounts;
         //TODO: index is the order, write UpdateColorDisplay function
-        for (int i = 0; i < sortedColorCounts.Count; i++)
-        {
-            var colorCount = sortedColorCounts[i];
-            UpdateColorDisplay(colorCount.Key, colorCount.Value, i);
-        }
     }
     //TODO: even when count is 0, should still call UpdateColorDisplay, with count of 0
     private void UpdateColorDisplay(Color color, int count, int index)
     {
-        Debug.Log($"Color: {color}, Count: {count/2}, Index: {index}");
+        //Debug.Log($"Color: {color}, Count: {count/2}, Index: {index}");
         EventManager.onColorComboEffectStatusCheck.Invoke(color, count/2, index);
         // TODO:UIarray: colorDisplays
         // colorDisplays[index].SetColor(color);

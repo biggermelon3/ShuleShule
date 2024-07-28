@@ -10,10 +10,17 @@ public class TreasureChest : MonoBehaviour
     {
         if (CheckForTreasures() && !success)
         {
-            Debug.Log("Success!");
-            EventManager.OnRoundComplete.Invoke();
-            success = true;
+            StartCoroutine(SuccessSequence());
+
         }
+    }
+
+    IEnumerator SuccessSequence()
+    {
+
+        yield return new WaitForSeconds(1f);
+        EventManager.OnRoundComplete.Invoke();
+        success = true;
     }
 
     private bool CheckForTreasures()

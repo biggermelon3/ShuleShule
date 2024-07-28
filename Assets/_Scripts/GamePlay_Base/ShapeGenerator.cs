@@ -23,8 +23,8 @@ public class ShapeGenerator : MonoBehaviour
     {
         GM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         blockPrefab = Resources.Load<GameObject>("Prefabs/Block");
-        EventManager.ProceedToNextLevel.AddListener(ShuffleColor);
-        EventManager.ProceedToNextLevel.AddListener(ShuffleColor);
+        EventManager.ProceedToNextLevel.AddListener(ShuffleColorForNewLevel);
+        EventManager.ShuffleColor.AddListener(ShuffleColor);
         GenerateShape();
     }
     public void GenerateShape()
@@ -206,8 +206,28 @@ public class ShapeGenerator : MonoBehaviour
 
     }
 
-    public void ShuffleColor(string t)
+    public void ShuffleColorForNewLevel(string t)
     {
+        Debug.Log(t);
+        List<GameObject> blocksInShape = new List<GameObject>();
+        foreach (Transform child in currentBlock.transform)
+        {
+            blocksInShape.Add(child.gameObject);
+        }
+
+        for (int x = 0; x < blocksInShape.Count; x++)
+        {
+            //Color selectedShapeColor = GM.PickRandomColor();
+            Color selectedShapeColor = GetRandomColorBaseOnChance();
+            prevColors[x] = selectedShapeColor;
+            blocksInShape[x].GetComponent<Renderer>().material.color = selectedShapeColor;
+            blocksInShape[x].GetComponent<Block>().Initialize(selectedShapeColor);
+        }
+    }
+
+    public void ShuffleColor()
+    {
+        Debug.Log("shuffle");
         List<GameObject> blocksInShape = new List<GameObject>();
         foreach (Transform child in currentBlock.transform)
         {
