@@ -117,7 +117,8 @@ public class GameManager : MonoBehaviour
     private Dictionary<Color, int> colorCounts = new Dictionary<Color, int>();
     
     public int comboThreshold = 10; // how many blocks to trigger color combo
-    public float effectDuration = 5.0f; // how long does the effect last
+    public int effectDuration = 1; // how long does the effect last
+    public int remainingCount = 0; //how many special blocs you can put
     private bool isEffectActive = false;
 
 
@@ -186,22 +187,28 @@ public class GameManager : MonoBehaviour
     }
 
     //the color combo effect!!!!
-    private IEnumerator TriggerComboEffect(float duration)
+    private IEnumerator TriggerComboEffect(int triggerCount)
     {
         isEffectActive = true;
         Debug.Log("Combo effect triggered!");
         ShapeGenerator.SetColorComboEffect(isEffectActive);
 
-        // TODO: put vfx there
-        // TODO: spawn only special bomb here
+        // initialize remainingCount
+        remainingCount = triggerCount;
 
-        yield return new WaitForSeconds(duration);
+        while (remainingCount > 0)
+        {
+            // TODO: put vfx there
+            // 等待触发减少次数的脚本调用
+            yield return null;
+        }
 
-        // colorcombo ends
+        // 颜色组合效果结束
         isEffectActive = false;
         ShapeGenerator.SetColorComboEffect(isEffectActive);
         ClearColorCounts();
     }
+    
 
     List<KeyValuePair<Color, int>> lastSortedColorCounts = new List<KeyValuePair<Color, int>>();
 
