@@ -1408,9 +1408,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 93a23c0be76304806b3762a9194ff1bf, type: 2}
   - {fileID: 11400000, guid: 080f23ab9776d487aaebeacbdc031e41, type: 2}
   - {fileID: 11400000, guid: af2dc9d6d225d47f59694c2ecc324fb3, type: 2}
-  - {fileID: 11400000, guid: 320b38cd14f3d2849836c31b576671da, type: 2}
-  - {fileID: 11400000, guid: b8604431ca6fa46a293a413395540450, type: 2}
-  - {fileID: 11400000, guid: 8a8cccb9b37ddf14b83db8a4849e6747, type: 2}
   - {fileID: 11400000, guid: 35760a340994819409a757c055e6030f, type: 2}
   gridSystem: {fileID: 763419419}
   blockPrefab: {fileID: 0}
