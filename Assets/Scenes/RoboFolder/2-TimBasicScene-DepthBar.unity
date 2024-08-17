@@ -710,9 +710,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bd43f481f09e4b64c885b831feed9b43, type: 2}
   ShapeGenerator: {fileID: 1317035402}
   score: 0
-  _ScoreObject: {fileID: 669306887}
-  comboThreshold: 10
-  effectDuration: 5
+  uiManager: {fileID: 0}
   remainingCount: 0
 --- !u!4 &143385487
 Transform:
@@ -2253,6 +2251,7 @@ MonoBehaviour:
   scoreBoardParent: {fileID: 1632306727}
   scoreBoardDisplayElementPrefab: {fileID: 4467084635062692887, guid: 65c205da3e315514a8a175ed45986632, type: 3}
   scoreBoardList: []
+  _ScoreObject: {fileID: 669306887}
 --- !u!82 &892640114
 AudioSource:
   m_ObjectHideFlags: 0
