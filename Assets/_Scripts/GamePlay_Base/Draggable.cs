@@ -157,8 +157,6 @@ public class Draggable : MonoBehaviour
         {
             //TODO: make a beter wireFrame FUncion FK
             //GM.gridSystem.WireFrameTheGrid(GM.currentGrid);
-            //spawn in new shape
-            GM.ShapeGenerator.GenerateShape();
 
             //check each placed block to see if it is removeable
             int newZCounter = 0;
@@ -200,10 +198,12 @@ public class Draggable : MonoBehaviour
             
             if (removedBlocksCount > 0)
             {
-                // ¸ù¾ÝÒÆ³ýµÄ·½¿éÊýÁ¿¸üÐÂÓÎÏ·Âß¼­£¬ÀýÈç¸üÐÂ·ÖÊý
+                // make a VFX of score adding
                 GM.AddScore(removedBlocksCount);
             }
             
+            //spawn in new shape after you calculate the score and staff
+            GM.ShapeGenerator.GenerateShape();
 
             EventManager.OnDraggablePlaced.Invoke(GM.gridSystem.CheckEntireGridForHighestZ());
             EventManager.CheckGameOver.Invoke();

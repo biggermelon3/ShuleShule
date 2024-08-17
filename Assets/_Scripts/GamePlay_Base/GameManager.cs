@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
     public GameObject _ScoreObject;
 
 
-    // µ÷ÓÃÕâ¸ö·½·¨À´Ôö¼Ó·ÖÊý
+    // add score
     public void AddScore(int points)
     {
         score += points;
@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
     //color Combo dictionary
     private Dictionary<Color, int> colorCounts = new Dictionary<Color, int>();
     
-    public int comboThreshold = 10; // how many blocks to trigger color combo
+    public int comboThreshold = 5; // how many blocks to trigger color combo
     public int effectDuration = 1; // how long does the effect last
     public int remainingCount = 0; //how many special blocs you can put
     private bool isEffectActive = false;
