@@ -102,13 +102,14 @@ public class GameManager : MonoBehaviour
     //scores
     public int score = 0;
     public static int _HIGHSCORE = 0;
-    public GameObject _ScoreObject;
-
+    //UI manager
+    public UIManager uiManager;
 
     // add score
     public void AddScore(int points)
     {
         score += points;
+        uiManager.UI_Score_Update(score);
     }
 
     ////////////////////////////////////////////////////////Color Combo happyTime//////////////////////
@@ -116,8 +117,8 @@ public class GameManager : MonoBehaviour
     //color Combo dictionary
     private Dictionary<Color, int> colorCounts = new Dictionary<Color, int>();
     
-    public int comboThreshold = 5; // how many blocks to trigger color combo
-    public int effectDuration = 1; // how long does the effect last
+    private int comboThreshold = 5; // how many blocks to trigger color combo
+    private int effectDuration = 1; // how long does the effect last
     public int remainingCount = 0; //how many special blocs you can put
     private bool isEffectActive = false;
 
