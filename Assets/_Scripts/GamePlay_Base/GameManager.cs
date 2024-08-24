@@ -8,7 +8,6 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
-
     public GridSystem gridSystem;
     public Block[,,] currentGrid;
     public int width;
