@@ -204,6 +204,10 @@ public class GridSystem : MonoBehaviour
             AddBlockToRemoveList(blocksToRemove, x, y - 1, z); // 下面
             AddBlockToRemoveList(blocksToRemove, x, y, z + 1); // 前面
             AddBlockToRemoveList(blocksToRemove, x, y, z - 1); // 后面
+            AddBlockToRemoveList(blocksToRemove, x + 1, y + 1, z); // 右前方
+            AddBlockToRemoveList(blocksToRemove, x + 1, y - 1, z); // 右后方
+            AddBlockToRemoveList(blocksToRemove, x - 1, y + 1, z); // 左前方
+            AddBlockToRemoveList(blocksToRemove, x - 1, y - 1, z); // 左后方
 
             // 添加中心方块
             blocksToRemove.Add(centerblock);

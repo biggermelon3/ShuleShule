@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class UIManager : MonoBehaviour
     public GameObject scoreBoardDisplayElementPrefab;
     public List<GameObject> scoreBoardList = new List<GameObject>();
     public Dictionary<Color, GameObject> scoreBoardDict = new Dictionary<Color, GameObject>();
+    public GameObject _ScoreObject;
 
     private void Start()
     {
@@ -23,6 +25,11 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void UI_Score_Update(int currentScore)
+    {
+        _ScoreObject.GetComponent<TextMeshProUGUI>().text = "Score: " + currentScore.ToString();
+    }
+    
     private void PopupGameOver()
     {
         audioSource.PlayOneShot(gameOverClip);

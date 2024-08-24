@@ -33,6 +33,7 @@ public class ShapeGenerator : MonoBehaviour
         if (isColorComboEffectActive)
         {
             GenerateSpecialBlock();
+            GM.remainingCount--; // only generate special block when it is the first Generated block
             return;
         }
 
@@ -87,6 +88,7 @@ public class ShapeGenerator : MonoBehaviour
         currentBlock = _Shape;
     }
     
+    //when failed to place the shape regenerate the old shape for the player
     public void GeneratePrevShape()
     {
         if (isColorComboEffectActive)
