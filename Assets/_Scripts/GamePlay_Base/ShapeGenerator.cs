@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class ShapeGenerator : MonoBehaviour
@@ -175,6 +176,7 @@ public class ShapeGenerator : MonoBehaviour
         _Shape.transform.position = transform.position;
         currentBlock = _Shape;
     }
+
     //change the state
     public void SetColorComboEffect(bool isActive)
     {
@@ -205,7 +207,6 @@ public class ShapeGenerator : MonoBehaviour
             }
         }
         return badColor;
-
     }
 
     public void ShuffleColorForNewLevel(string t)

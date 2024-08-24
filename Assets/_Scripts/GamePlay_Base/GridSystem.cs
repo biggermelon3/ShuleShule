@@ -17,6 +17,7 @@ public class GridSystem : MonoBehaviour
     private Vector3 goalCoords;
 
     public Dictionary<Color, float> colorPickPercentage = new Dictionary<Color, float>();
+    public Dictionary<Color, List<Block>> surfaceColorDistribution = new Dictionary<Color, List<Block>>();
 
     private void Start()
     {
@@ -191,7 +192,7 @@ public class GridSystem : MonoBehaviour
     {
         List<Block> blocksToRemove = new List<Block>();
         Debug.Log("bomb");
-        if (specialShapes == GameManager.SpecialShapes.Bomb_Shape)
+        if (specialShapes == GameManager.SpecialShapes.Bomb_Color)
         {
             int x = centerblock.x;
             int y = centerblock.y;
@@ -217,9 +218,20 @@ public class GridSystem : MonoBehaviour
 
             return blocksToRemove;
         }
+        else if (specialShapes == GameManager.SpecialShapes.Bomb_Shape)
+        {
+            ReadSurfaceColorDistribution();
+            Block targetBlock = GetBombColorTargetColor(centerblock.x, centerblock.y, centerblock.z);
+            Color toRemoveColor = targetBlock.BlockColor;
+            blocksToRemove = surfaceColorDistribution[toRemoveColor];
+            blocksToRemove.Add(centerblock);
+            blocksToRemove.Add(targetBlock);
+            RemoveBlocks(blocksToRemove);
+        }
 
         return null;
     }
+
 
     private void AddBlockToRemoveList(List<Block> blocksToRemove, int x, int y, int z)
     {
@@ -400,7 +412,7 @@ public class GridSystem : MonoBehaviour
         colorPickPercentage = new Dictionary<Color, float>();
         for (int x = 0; x < width; x++)
         {
-            for (int y = 0; y < width; y++)
+            for (int y = 0; y < height; y++)
             {
                 int z = GetHighestZ(x, y) + 1;
                 if (z < 10)
@@ -426,5 +438,49 @@ public class GridSystem : MonoBehaviour
         {
             //Debug.Log("color percentage of " + c.Key + " " + c.Value);
         }
+    }
+
+    private Block GetBombColorTargetColor(int tX, int tY, int tZ)
+    {
+        Block targetBlock = grid[tX, tY, tZ + 1];
+        if (targetBlock != null)
+        {
+            return targetBlock;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    private void ReadSurfaceColorDistribution()
+    {
+        surfaceColorDistribution = new Dictionary<Color, List<Block>>();
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                int z = GetHighestZ(x, y) + 1;
+                if (z < 10)
+                {
+                    if (grid[x,y,z] != null)
+                    {
+                        Block b = grid[x, y, z];
+                        Color thisColor = b.BlockColor;
+                        if (surfaceColorDistribution.ContainsKey(thisColor))
+                        {
+                            surfaceColorDistribution[thisColor].Add(b);
+                        }
+                        else
+                        {
+                            List<Block> tempNewBlockList = new List<Block>();
+                            tempNewBlockList.Add(b);
+                            surfaceColorDistribution.Add(thisColor, tempNewBlockList);
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
