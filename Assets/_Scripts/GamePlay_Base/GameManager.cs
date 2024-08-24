@@ -91,7 +91,8 @@ public class GameManager : MonoBehaviour
     public enum SpecialShapes
     {
         Basic,
-        Bomb_Shape
+        Bomb_Shape,
+        Bomb_Color
         //TODO:add more spcial shapes here
 
     }
