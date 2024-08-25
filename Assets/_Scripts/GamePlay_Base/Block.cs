@@ -36,6 +36,11 @@ public class Block : MonoBehaviour
         Destroy(block.gameObject);
     }
 
+    public void RemoveBlockComponent(Block block)
+    {
+        RemoveBlockComponent(block.GetComponent<Block>());
+    }
+
     public void ShowInvalid()
     {
         _renderer.material = invalidMat;

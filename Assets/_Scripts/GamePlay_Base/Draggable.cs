@@ -203,10 +203,11 @@ public class Draggable : MonoBehaviour
             }
             
             //spawn in new shape after you calculate the score and staff
-            GM.ShapeGenerator.GenerateShape();
+
 
             EventManager.OnDraggablePlaced.Invoke(GM.gridSystem.CheckEntireGridForHighestZ());
             EventManager.CheckGameOver.Invoke();
+            GM.ShapeGenerator.GenerateShape();
         }
     }
 

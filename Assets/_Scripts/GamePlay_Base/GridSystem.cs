@@ -193,7 +193,6 @@ public class GridSystem : MonoBehaviour
     public List<Block> SpecialRemove(GameManager.SpecialShapes specialShapes, Block centerblock)
     {
         List<Block> blocksToRemove = new List<Block>();
-        Debug.Log("bomb");
         if (specialShapes == GameManager.SpecialShapes.Bomb_Color)
         {
             int x = centerblock.x;
@@ -266,8 +265,31 @@ public class GridSystem : MonoBehaviour
         }
     }
 
+    public void RemoveBlocksComponents(List<Block> blocksToRemove)
+    {
+        foreach (Block block in blocksToRemove)
+        {
+            if (block != null)
+            {
+                if (grid[block.x, block.y, block.z] != null)
+                {
+                    grid[block.x, block.y, block.z] = null;
+                    //emptyGrid[block.x, block.y, block.z] = Instantiate(wireCubePrefab, new Vector3(block.x, block.y, block.z), Quaternion.identity);
+                    EventManager.onBlockRemoved.Invoke(block.transform.position, block.BlockColor);
+                    block.RemoveBlockComponent(block);
+                }
+            }
+        }
+    }
+
     private IEnumerator RemoveBlocksSequence(List<Block> blocksToRemove, Vector3 centerLocation)
     {
+        foreach (Block b in blocksToRemove)
+        {
+            grid[b.x, b.y, b.z] = null;
+        }
+
+
         List<Block> sortedObjects = blocksToRemove.OrderBy(x => Vector3.Magnitude(new Vector3(x.x, x.y, x.z) - centerLocation)).ToList();
         foreach (Block x in sortedObjects)
         {
@@ -391,7 +413,15 @@ public class GridSystem : MonoBehaviour
             }
         }
 
-        return allZ.Min();
+        if (allZ.Count == 0)
+        {
+            return depth;
+        }
+        else
+        {
+            return allZ.Min();
+
+        }
     }
 
     public List<int> GetHightestZCoordList(List<Vector2> xy)
@@ -435,6 +465,10 @@ public class GridSystem : MonoBehaviour
                     if (grid[x, y, z] != null)
                     {
                         Block b = grid[x, y, z];
+                        if (b.BlockColor == Color.white)
+                        {
+                            Debug.Log("there's a white block");
+                        }
                         allZColor.Add(b.BlockColor);
                         if (!colorPickPercentage.ContainsKey(b.BlockColor))
                         {
