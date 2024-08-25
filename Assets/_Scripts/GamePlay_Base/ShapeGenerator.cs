@@ -13,6 +13,7 @@ public class ShapeGenerator : MonoBehaviour
     private GameObject blockPrefab;
 
     private GameObject currentBlock;//stores the generated shape into this, for shuffling color
+    //[SerializeField]
     private bool isColorComboEffectActive = false;//track color combo
 
     private void Awake()
@@ -34,7 +35,7 @@ public class ShapeGenerator : MonoBehaviour
         if (isColorComboEffectActive)
         {
             GenerateSpecialBlock();
-            GM.remainingCount--; // only generate special block when it is the first Generated block
+            //GM.remainingCount--; // only generate special block when it is the first Generated block
             return;
         }
 

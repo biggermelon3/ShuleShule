@@ -193,7 +193,7 @@ public class Draggable : MonoBehaviour
                 //calculate color combos
                 GM.UpdateColorCounts(removeBlockList);
             }
-            
+            GM.remainingCount--;
             //calculate score
             int removedBlocksCount = 0;
             if(removeBlockList != null)

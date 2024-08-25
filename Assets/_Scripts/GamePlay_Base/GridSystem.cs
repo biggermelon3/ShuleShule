@@ -181,10 +181,14 @@ public class GridSystem : MonoBehaviour
         List<Block> blocksToRemove = new List<Block>();
         foreach (Block b in draggableBlocks)
         {
-            if (grid[b.x, b.y, b.z + 1].BlockColor == b.BlockColor && grid[b.x, b.y, b.z + 1] != null)
+            if (b.z + 1 < depth)
             {
-                blocksToRemove.Add(grid[b.x, b.y, b.z + 1]);
+                if (grid[b.x, b.y, b.z + 1].BlockColor == b.BlockColor && grid[b.x, b.y, b.z + 1] != null)
+                {
+                    blocksToRemove.Add(grid[b.x, b.y, b.z + 1]);
+                }
             }
+
         }
 
 

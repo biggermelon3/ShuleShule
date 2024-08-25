@@ -7,6 +7,9 @@ public class NextLevelButton : MonoBehaviour
 {
     [SerializeField]
     private Button nextLevelButton;
+    [SerializeField]
+    private GameObject nextLevelPrompt;
+    private int levelIndex = 0;
 
     private void Start()
     {
@@ -15,7 +18,9 @@ public class NextLevelButton : MonoBehaviour
 
     public void LoadNextLevelOnClick()
     {
+        levelIndex++;
+        nextLevelPrompt.SetActive(false);
         EventManager.OnRoundCompleteRemoveBlock.Invoke();
-        EventManager.ProceedToNextLevel.Invoke("lvl1");
+        EventManager.ProceedToNextLevel.Invoke("lvl"+levelIndex);
     }
 }

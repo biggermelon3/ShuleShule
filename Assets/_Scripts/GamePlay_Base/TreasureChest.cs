@@ -5,13 +5,24 @@ using UnityEngine;
 public class TreasureChest : MonoBehaviour
 {
     public List<Treasure> treasures = new List<Treasure>();
-    bool success;
+    public bool success;
+
+    private void Start()
+    {
+        EventManager.OnRoundCompleteRemoveBlock.AddListener(ResetSuccessState);
+    }
+
+    private void ResetSuccessState()
+    {
+        success = false;
+    }
+
     private void Update()
     {
         if (CheckForTreasures() && !success)
         {
-            StartCoroutine(SuccessSequence());
-
+            EventManager.OnRoundComplete.Invoke();
+            success = true;
         }
     }
 
@@ -19,7 +30,6 @@ public class TreasureChest : MonoBehaviour
     {
 
         yield return new WaitForSeconds(1f);
-        EventManager.OnRoundComplete.Invoke();
         success = true;
     }
 
