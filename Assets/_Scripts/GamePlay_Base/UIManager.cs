@@ -16,6 +16,10 @@ public class UIManager : MonoBehaviour
     public Dictionary<Color, GameObject> scoreBoardDict = new Dictionary<Color, GameObject>();
     public GameObject _ScoreObject;
 
+    [Header("UI Elements")]
+    [Tooltip("TextMeshPro Text component to display the countdown")]
+    public TMP_Text countdownText;
+
     private void Start()
     {
         EventManager.GameOver.AddListener(PopupGameOver);
@@ -25,11 +29,18 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void UI_Score_Update(int currentScore)
+    public void UI_Update_Score(int currentScore)
     {
         _ScoreObject.GetComponent<TextMeshProUGUI>().text = "Score: " + currentScore.ToString();
     }
-    
+
+    public void UI_Update_CountdownText(float currentTime)
+    {
+        //int minutes = Mathf.FloorToInt(currentTime / 60); // 计算剩余的分钟数
+        int seconds = Mathf.FloorToInt(currentTime); // 计算剩余的秒数
+        countdownText.text = seconds.ToString();// 更新文本
+    }
+
     private void PopupGameOver()
     {
         audioSource.PlayOneShot(gameOverClip);

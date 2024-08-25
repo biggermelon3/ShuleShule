@@ -69,11 +69,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (score > _HIGHSCORE)
-        {
-            _HIGHSCORE = score;
-            AddScore(0);
-        }
+        TimeUpdate();
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -99,17 +95,31 @@ public class GameManager : MonoBehaviour
 
 
     public ShapeGenerator ShapeGenerator;
-    //scores
-    public int score = 0;
-    public static int _HIGHSCORE = 0;
+
+    ////////////////////////////////////////////////////////Time/score Management////////////////////////
+
+    public float CurrentTime;
     //UI manager
     public UIManager uiManager;
+
+    private void TimeUpdate()
+    {
+        CurrentTime -= Time.deltaTime;
+        uiManager.UI_Update_CountdownText(CurrentTime);
+        //countdown to 0
+        if (CurrentTime <= 0)
+        {
+            EventManager.GameOver.Invoke();
+            CurrentTime = 0.1f;
+        }
+    }
+
+    
 
     // add score
     public void AddScore(int points)
     {
-        score += points;
-        uiManager.UI_Score_Update(score);
+        CurrentTime += points;
     }
 
     ////////////////////////////////////////////////////////Color Combo happyTime//////////////////////
@@ -332,6 +342,7 @@ public class GameManager : MonoBehaviour
             height = levelData.height;
             width = levelData.width;
             depth = levelData.depth;
+            CurrentTime = levelData.levelTime;
             
             // Initialize colorPalette and allShapes from levelData
             colorPalette = ScriptableObject.CreateInstance<ColorSetting>();

@@ -199,7 +199,7 @@ public class Draggable : MonoBehaviour
             if (removedBlocksCount > 0)
             {
                 // make a VFX of score adding
-                GM.AddScore(removedBlocksCount);
+                GM.AddScore(removedBlocksCount/2);
             }
             
             //spawn in new shape after you calculate the score and staff
