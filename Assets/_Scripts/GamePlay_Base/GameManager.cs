@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
     //color Combo dictionary
     private Dictionary<Color, int> colorCounts = new Dictionary<Color, int>();
     
-    private int comboThreshold = 5; // how many blocks to trigger color combo
+    private int comboThreshold = 8; // how many blocks to trigger color combo
     private int effectDuration = 1; // how long does the effect last
     public int remainingCount = 0; //how many special blocs you can put
     private bool isEffectActive = false;
