@@ -5,6 +5,7 @@ using UnityEngine;
 public class EffectManager : MonoBehaviour
 {
     public GameObject blockRemoveParticle;
+    public GameObject Particle_pulsOne;
 
     private void Start()
     {
@@ -18,5 +19,9 @@ public class EffectManager : MonoBehaviour
         particleMainModule.startColor = c;
         Instantiate(particleToSpawn);
         particleToSpawn.transform.position = pos;
+
+        //Instantiate +1s;
+        Instantiate(Particle_pulsOne);
+        Particle_pulsOne.transform.position = pos + Vector3.back;
     }
 }
