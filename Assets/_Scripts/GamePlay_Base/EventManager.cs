@@ -13,6 +13,7 @@ public static class EventManager
     public static UnityEvent CheckGameOver = new UnityEvent();
     public static UnityEvent GameOver = new UnityEvent();
     public static UnityEvent<Vector3, Color> onBlockRemoved = new UnityEvent<Vector3, Color>();
+    public static UnityEvent<int> onScoreUpdate = new UnityEvent<int>();
 
     public static UnityEvent<Color, int, int> onColorComboEffectStatusCheck = new UnityEvent<Color, int, int>();
     public static UnityEvent<List<KeyValuePair<Color, int>>> newOnCOlorComboEffectStatusCheck = new UnityEvent<List<KeyValuePair<Color, int>>>();   

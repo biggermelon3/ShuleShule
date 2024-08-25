@@ -127,61 +127,71 @@ public class GridSystem : MonoBehaviour
     
     
     //return the list of removed blcoks, or return null is no blocks are removable
-    public List<Block> CheckAndRemoveBlocks()
+    public List<Block> CheckAndRemoveBlocks(List<Block> draggableBlocks)
     {
-        bool[,,] visited = new bool[width, height, depth];
+        //bool[,,] visited = new bool[width, height, depth];
 
+        //List<Block> blocksToRemove = new List<Block>();
+        //HashSet<Block> blocksSet = new HashSet<Block>();
+
+        //for (int x = 0; x < width; x++)
+        //{
+        //    for (int y = 0; y < height; y++)
+        //    {
+        //        for (int z = 0; z < depth; z++)
+        //        {
+        //            // Check the block above and below
+        //            if (grid[x, y, z] != null)
+        //            {
+        //                Block currentBlock = grid[x, y, z];
+
+        //                // Check above
+        //                if (z + 1 < depth && grid[x, y, z + 1] != null && grid[x, y, z + 1].BlockColor == currentBlock.BlockColor)
+        //                {
+        //                    if (!blocksSet.Contains(currentBlock))
+        //                    {
+        //                        blocksToRemove.Add(currentBlock);
+        //                        blocksSet.Add(currentBlock);
+        //                    }
+        //                    if (!blocksSet.Contains(grid[x, y, z + 1]))
+        //                    {
+        //                        blocksToRemove.Add(grid[x, y, z + 1]);
+        //                        blocksSet.Add(grid[x, y, z + 1]);
+        //                    }
+        //                }
+
+        //                // Check below
+        //                if (z - 1 >= 0 && grid[x, y, z - 1] != null && grid[x, y, z - 1].BlockColor == currentBlock.BlockColor)
+        //                {
+        //                    if (!blocksSet.Contains(currentBlock))
+        //                    {
+        //                        blocksToRemove.Add(currentBlock);
+        //                        blocksSet.Add(currentBlock);
+        //                    }
+        //                    if (!blocksSet.Contains(grid[x, y, z - 1]))
+        //                    {
+        //                        blocksToRemove.Add(grid[x, y, z - 1]);
+        //                        blocksSet.Add(grid[x, y, z - 1]);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
         List<Block> blocksToRemove = new List<Block>();
-        HashSet<Block> blocksSet = new HashSet<Block>();
-
-        for (int x = 0; x < width; x++)
+        foreach (Block b in draggableBlocks)
         {
-            for (int y = 0; y < height; y++)
+            if (grid[b.x, b.y, b.z + 1].BlockColor == b.BlockColor && grid[b.x, b.y, b.z + 1] != null)
             {
-                for (int z = 0; z < depth; z++)
-                {
-                    // Check the block above and below
-                    if (grid[x, y, z] != null)
-                    {
-                        Block currentBlock = grid[x, y, z];
-
-                        // Check above
-                        if (z + 1 < depth && grid[x, y, z + 1] != null && grid[x, y, z + 1].BlockColor == currentBlock.BlockColor)
-                        {
-                            if (!blocksSet.Contains(currentBlock))
-                            {
-                                blocksToRemove.Add(currentBlock);
-                                blocksSet.Add(currentBlock);
-                            }
-                            if (!blocksSet.Contains(grid[x, y, z + 1]))
-                            {
-                                blocksToRemove.Add(grid[x, y, z + 1]);
-                                blocksSet.Add(grid[x, y, z + 1]);
-                            }
-                        }
-
-                        // Check below
-                        if (z - 1 >= 0 && grid[x, y, z - 1] != null && grid[x, y, z - 1].BlockColor == currentBlock.BlockColor)
-                        {
-                            if (!blocksSet.Contains(currentBlock))
-                            {
-                                blocksToRemove.Add(currentBlock);
-                                blocksSet.Add(currentBlock);
-                            }
-                            if (!blocksSet.Contains(grid[x, y, z - 1]))
-                            {
-                                blocksToRemove.Add(grid[x, y, z - 1]);
-                                blocksSet.Add(grid[x, y, z - 1]);
-                            }
-                        }
-                    }
-                }
+                blocksToRemove.Add(grid[b.x, b.y, b.z + 1]);
             }
         }
+
 
         // Remove blocks if any matching pairs found
         if (blocksToRemove.Count > 0)
         {
+            RemoveDraggableBlocks(draggableBlocks);
             RemoveBlocks(blocksToRemove);
             return blocksToRemove;
         }
@@ -265,6 +275,22 @@ public class GridSystem : MonoBehaviour
         }
     }
 
+    public void RemoveDraggableBlocks(List<Block> blocksToRemove)
+    {
+        foreach (Block block in blocksToRemove)
+        {
+            if (block != null)
+            {
+                if (grid[block.x, block.y, block.z] != null)
+                {
+                    grid[block.x, block.y, block.z] = null;
+                    //emptyGrid[block.x, block.y, block.z] = Instantiate(wireCubePrefab, new Vector3(block.x, block.y, block.z), Quaternion.identity);
+                    block.RemoveBlock(block);
+                }
+            }
+        }
+    }
+
     public void RemoveBlocksComponents(List<Block> blocksToRemove)
     {
         foreach (Block block in blocksToRemove)
@@ -294,6 +320,7 @@ public class GridSystem : MonoBehaviour
         foreach (Block x in sortedObjects)
         {
             EventManager.onBlockRemoved.Invoke(x.transform.position, x.BlockColor);
+            EventManager.onScoreUpdate.Invoke(1);
             x.RemoveBlock(x);
             yield return new WaitForSeconds(0.1f);
 

@@ -63,7 +63,7 @@ public class UIManager : MonoBehaviour
             GameObject spawnedScoreBoardDisplayElement = Instantiate(scoreBoardDisplayElementPrefab);
             spawnedScoreBoardDisplayElement.transform.parent = scoreBoardParent.transform;
             spawnedScoreBoardDisplayElement.transform.localScale = Vector3.one;
-            spawnedScoreBoardDisplayElement.GetComponent<ColorComboScoreDisplay>().UpdateScoreDisplay(newSortedList[i].Value/2);
+            spawnedScoreBoardDisplayElement.GetComponent<ColorComboScoreDisplay>().UpdateScoreDisplay(newSortedList[i].Value);
             spawnedScoreBoardDisplayElement.GetComponent<ColorComboScoreDisplay>().UpdateColor(newSortedList[i].Key);
 
             scoreBoardList.Add(spawnedScoreBoardDisplayElement);

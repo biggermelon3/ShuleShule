@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
         EventManager.OnRoundComplete.AddListener(DisplayRoundCompletePrompt);
         EventManager.OnRoundCompleteRemoveBlock.AddListener(RemoveAllPrevRoundBlocks);
         EventManager.ProceedToNextLevel.AddListener(LoadLevel);
+        EventManager.onScoreUpdate.AddListener(AddScore);
         gridSystem.ReadColorPercentages(0);
     }
 
@@ -160,6 +161,8 @@ public class GameManager : MonoBehaviour
         }
 
 
+
+
         // Update the main dic, add new colors into the main dic, if it doesnt exist add a new one
         foreach (var kvp in newColorCounts)
         {
@@ -175,7 +178,7 @@ public class GameManager : MonoBehaviour
             }
 
             // check if it trigger the combo effect
-            if (colorCounts[kvp.Key]/2 >= comboThreshold && !isEffectActive)
+            if (colorCounts[kvp.Key] >= comboThreshold && !isEffectActive)
             {
                 StartCoroutine(TriggerComboEffect(effectDuration));
             }
@@ -241,7 +244,7 @@ public class GameManager : MonoBehaviour
     private void UpdateColorDisplay(Color color, int count, int index)
     {
         //Debug.Log($"Color: {color}, Count: {count/2}, Index: {index}");
-        EventManager.onColorComboEffectStatusCheck.Invoke(color, count/2, index);
+        EventManager.onColorComboEffectStatusCheck.Invoke(color, count, index);
         // TODO:UIarray: colorDisplays
         // colorDisplays[index].SetColor(color);
         // colorDisplays[index].SetCount(count);

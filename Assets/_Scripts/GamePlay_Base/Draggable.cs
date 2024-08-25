@@ -184,7 +184,12 @@ public class Draggable : MonoBehaviour
             else
             {
                 //do the normal remove check
-                removeBlockList = GM.gridSystem.CheckAndRemoveBlocks();
+                List<Block> myBlocks = new List<Block>();
+                foreach (Transform child in transform)
+                {
+                    myBlocks.Add(child.GetComponent<Block>());
+                }
+                removeBlockList = GM.gridSystem.CheckAndRemoveBlocks(myBlocks);
                 //calculate color combos
                 GM.UpdateColorCounts(removeBlockList);
             }
@@ -199,7 +204,7 @@ public class Draggable : MonoBehaviour
             if (removedBlocksCount > 0)
             {
                 // make a VFX of score adding
-                GM.AddScore(removedBlocksCount/2);
+                GM.AddScore(removedBlocksCount);
             }
             
             //spawn in new shape after you calculate the score and staff
