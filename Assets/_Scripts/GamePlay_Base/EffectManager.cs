@@ -7,6 +7,9 @@ public class EffectManager : MonoBehaviour
     public GameObject blockRemoveParticle;
     public GameObject Particle_pulsOne;
 
+    public AudioSource audioSource;
+    public AudioClip addTimeClip;
+
     private void Start()
     {
         EventManager.onBlockRemoved.AddListener(RemoveBlock);
@@ -14,6 +17,7 @@ public class EffectManager : MonoBehaviour
 
     private void RemoveBlock(Vector3 pos, Color c)
     {
+        audioSource.PlayOneShot(addTimeClip);
         GameObject particleToSpawn = blockRemoveParticle.gameObject;
         var particleMainModule = particleToSpawn.GetComponent<ParticleSystem>().main;
         particleMainModule.startColor = c;

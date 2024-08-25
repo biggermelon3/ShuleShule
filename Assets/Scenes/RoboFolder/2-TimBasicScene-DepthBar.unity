@@ -723,7 +723,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c4dea3775eca84141877209b7866273a, type: 2}
   - {fileID: 11400000, guid: bd43f481f09e4b64c885b831feed9b43, type: 2}
   ShapeGenerator: {fileID: 1317035402}
-  score: 0
+  CurrentTime: 0
   uiManager: {fileID: 892640113}
   remainingCount: 0
 --- !u!4 &143385487
@@ -1494,8 +1494,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708c4b8834f2b8341a284e3e7f3b72d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countdownTime: 600
-  countdownText: {fileID: 597637947}
 --- !u!114 &597637947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2266,6 +2264,7 @@ MonoBehaviour:
   scoreBoardDisplayElementPrefab: {fileID: 4467084635062692887, guid: 65c205da3e315514a8a175ed45986632, type: 3}
   scoreBoardList: []
   _ScoreObject: {fileID: 669306887}
+  countdownText: {fileID: 597637947}
 --- !u!82 &892640114
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3325,9 +3324,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd4b7993ef17d247bcdf7c5ee80b490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockRemoveParticle: {fileID: 8477230694013133091, guid: 60650a158deb41e4b9c92ff644596bb1, type: 3}
-  timeEffectAudioSource: {fileID: 1431783068}
-  addTimeSoundEffect: {fileID: 8300000, guid: 8091fa1f12e8d81418721929c44f4627, type: 3}
+  blockRemoveParticle: {fileID: 2559564592528213268, guid: aabcf274ea99a384f96879a066c6c944, type: 3}
+  Particle_pulsOne: {fileID: 941111316437246768, guid: 7fe9fbc60c4f24604bb4fe17332ddd0a, type: 3}
+  audioSource: {fileID: 1431783068}
+  addTimeClip: {fileID: 8300000, guid: 8091fa1f12e8d81418721929c44f4627, type: 3}
 --- !u!82 &1431783068
 AudioSource:
   m_ObjectHideFlags: 0
