@@ -3,6 +3,8 @@ using System.Linq;
 using UnityEngine;
 using System.Linq;
 using System;
+using System.Collections;
+using System.Xml.Linq;
 
 
 public class GridSystem : MonoBehaviour
@@ -224,9 +226,10 @@ public class GridSystem : MonoBehaviour
             Block targetBlock = GetBombColorTargetColor(centerblock.x, centerblock.y, centerblock.z);
             Color toRemoveColor = targetBlock.BlockColor;
             blocksToRemove = surfaceColorDistribution[toRemoveColor];
-            blocksToRemove.Add(centerblock);
-            blocksToRemove.Add(targetBlock);
-            RemoveBlocks(blocksToRemove);
+            blocksToRemove.Add(centerblock);//adding the bomb the the remove sequence
+            blocksToRemove.Add(targetBlock);//adding the block underneath the bomb the the remove sequence
+            //RemoveBlocks(blocksToRemove);
+            StartCoroutine(RemoveBlocksSequence(blocksToRemove, centerblock.transform.position));
         }
 
         return null;
@@ -260,6 +263,18 @@ public class GridSystem : MonoBehaviour
                     block.RemoveBlock(block);
                 }
             }
+        }
+    }
+
+    private IEnumerator RemoveBlocksSequence(List<Block> blocksToRemove, Vector3 centerLocation)
+    {
+        List<Block> sortedObjects = blocksToRemove.OrderBy(x => Vector3.Magnitude(new Vector3(x.x, x.y, x.z) - centerLocation)).ToList();
+        foreach (Block x in sortedObjects)
+        {
+            EventManager.onBlockRemoved.Invoke(x.transform.position, x.BlockColor);
+            x.RemoveBlock(x);
+            yield return new WaitForSeconds(0.1f);
+
         }
     }
 
